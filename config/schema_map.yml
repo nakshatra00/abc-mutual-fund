@@ -1,0 +1,42 @@
+canonical:
+  - ISIN
+  - Name of the Instrument
+  - Industry / Rating
+  - Quantity
+  - Market/Fair Value (Rs. in Lacs)
+  - "% to NAV"
+  - YIELD
+
+aliases_common:
+  ISIN: ["isin","isin no","isin code","isin number"]
+  Name of the Instrument: ["name of the instrument","security name","name of issuer","issuer","instrument","company/issuer/instrument name","name of instrument"]
+  Industry / Rating: ["industry / rating","industry","rating","credit rating","rating / industry","industry/rating","industry+ /rating"]
+  Quantity: ["quantity","qty","units","no. of units","quantity (face)"]
+  Market/Fair Value (Rs. in Lacs): ["market value","fair value","current value","book value","exposure/market value(rs.lakh)","market/fair value (rs.in lacs)","market value (rs.in lacs)","market/ fair value (rs. in lacs.)"]
+  "% to NAV": ["% to nav","% to aum","% of net assets","% to net assets"]
+  YIELD: ["yield","ytm","yield (%)","yield to maturity","yield of the instrument"]
+
+aliases_by_amc:
+  ABSLF:
+    "% to NAV": ["% to net assets"]
+  ICICI:
+    Name of the Instrument: ["company/issuer/instrument name"]
+    Market/Fair Value (Rs. in Lacs): ["exposure/market value(rs.lakh)"]
+    "% to NAV": ["% to nav"]
+    YIELD: ["yield of the instrument"]
+  KOTAK:
+    ISIN: ["isin code"]
+    Name of the Instrument: ["name of instrument"]
+    Market/Fair Value (Rs. in Lacs): ["market value (rs.in lacs)"]
+    YIELD: ["yield*"]
+    "% to NAV": ["% to net assets"]
+  HDFC:
+    Name of the Instrument: ["name of the instrument","name of the instrument "]
+    Market/Fair Value (Rs. in Lacs): ["market/ fair value (rs. in lacs.)"]
+  NIPPON: {}
+  SBI:
+    "Name of the Instrument": ["name of the instrument / issuer"]
+    "Industry / Rating": ["rating / industry^"]
+    "Market/Fair Value (Rs. in Lacs)": ["market value\n(rs. in lakhs)"]
+    "% to NAV": ["% to aum"]
+    "YIELD": ["ytm %"]

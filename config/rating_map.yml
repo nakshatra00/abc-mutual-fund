@@ -1,0 +1,20 @@
+sovereign_tokens: ["g-sec","gs","goi","government stock","sdl","t-bill","tbill","state dev loan","govt of"]
+map:
+  aaa: "AAA"
+  aa+: "AA+"
+  aa: "AA"
+  aa-: "AA-"
+  a+: "A+"
+  a: "A"
+  a-: "A-"
+  bbb+: "BBB+"
+  bbb: "BBB"
+  bbb-: "BBB-"
+  a1+: "A1+"
+  a1: "A1"
+  a2+: "A2+"
+  a2: "A2"
+  a3: "A3"
+  sovereign: "SOVEREIGN"
+order: ["SOVEREIGN","AAA","AA+","AA","AA-","A+","A","A-","BBB+","BBB","BBB-","BB+","BB","BB-","B+","B","B-","C","D","A1+","A1","A2+","A2","A3"]
+short_term_prefixes: ["a1","a2","a3"]
