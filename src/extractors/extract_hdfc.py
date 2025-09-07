@@ -102,7 +102,6 @@ def extract_hdfc_data():
     standardized['Yield'] = pd.to_numeric(data_df.get('Yield', ''), errors='coerce')
     standardized['Rating'] = data_df.get('Industry+ /Rating', '')
     standardized['Quantity'] = pd.to_numeric(data_df.get('Quantity', ''), errors='coerce')
-    standardized['Coupon'] = pd.to_numeric(data_df.get('Coupon (%)', ''), errors='coerce')
     
     # Parse maturity dates
     print("📅 Parsing maturity dates...")

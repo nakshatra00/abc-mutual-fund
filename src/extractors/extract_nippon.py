@@ -96,7 +96,7 @@ def extract_nippon_data():
         'Instrument Name': data_df.get('Name of the Instrument', ''),
         'Market Value (Lacs)': pd.to_numeric(data_df[value_col], errors='coerce'),
         '% to NAV': nav_values,
-        'Yield': pd.to_numeric(data_df.get('YIELD', ''), errors='coerce'),
+        'Yield': pd.to_numeric(data_df.get('YIELD', ''), errors='coerce') * 100,  # Convert decimal to percentage
         'Rating': data_df.get('Industry / Rating', ''),
         'Quantity': pd.to_numeric(data_df.get('Quantity', ''), errors='coerce')
     })

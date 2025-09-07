@@ -6,6 +6,7 @@ Creates the comprehensive analysis dataset
 
 import pandas as pd
 from pathlib import Path
+from rating_standardizer import standardize_ratings
 
 def consolidate_all_funds():
     """Consolidate all 6 fund extracts into final dataset"""
@@ -57,6 +58,12 @@ def consolidate_all_funds():
     
     # Combine all funds
     consolidated = pd.concat(all_funds, ignore_index=True)
+    
+    # Add standardized rating column
+    print(f"\n⭐ STANDARDIZING RATINGS:")
+    print("-" * 30)
+    consolidated = standardize_ratings(consolidated, 'Rating', create_new_column=True, print_summary=True)
+    
     print(f"\n📊 CONSOLIDATED DATASET:")
     print("-" * 30)
     print(f"Total Holdings: {len(consolidated):,}")
@@ -82,6 +89,22 @@ def consolidate_all_funds():
     total_with_maturity = consolidated['Maturity Date'].notna().sum()
     overall_coverage = total_with_maturity / len(consolidated) * 100
     print(f"Holdings with Maturity: {total_with_maturity:,} / {len(consolidated):,} ({overall_coverage:.1f}%)")
+    
+    # Rating quality analysis
+    print(f"\n⭐ RATING QUALITY ANALYSIS:")
+    print("-" * 30)
+    if 'Standardized Rating' in consolidated.columns:
+        # Analyze by rating grade
+        rating_value = consolidated.groupby('Standardized Rating')['Market Value (Lacs)'].agg(['count', 'sum']).round(2)
+        rating_value.columns = ['Holdings', 'Total Value (Lacs)']
+        rating_value['Total Value (Crores)'] = rating_value['Total Value (Lacs)'] / 100
+        rating_value['% of Portfolio'] = rating_value['Total Value (Lacs)'] / consolidated['Market Value (Lacs)'].sum() * 100
+        
+        # Show top rating categories by value
+        rating_value_sorted = rating_value.sort_values('Total Value (Lacs)', ascending=False).head(5)
+        for rating, row in rating_value_sorted.iterrows():
+            if pd.notna(rating):
+                print(f"{rating:>12}: {row['Holdings']} holdings, ₹{row['Total Value (Crores)']:,.0f} Cr ({row['% of Portfolio']:.1f}%)")
     
     # Save consolidated dataset
     output_file = Path("output/2025-07-31/Corporate_Bond_Funds_Consolidated_Analysis.csv")

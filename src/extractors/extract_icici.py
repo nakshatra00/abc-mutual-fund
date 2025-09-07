@@ -97,8 +97,7 @@ def extract_icici_data():
         '% to NAV': nav_values,
         'Yield': pd.to_numeric(data_df.get('Yield of the instrument', ''), errors='coerce'),
         'Rating': data_df.get('Industry/Rating', ''),
-        'Quantity': pd.to_numeric(data_df.get('Quantity', ''), errors='coerce'),
-        'Coupon': pd.to_numeric(data_df.get('Coupon', ''), errors='coerce')
+        'Quantity': pd.to_numeric(data_df.get('Quantity', ''), errors='coerce')
     })
     
     # ICICI typically doesn't have maturity dates in instrument names

@@ -83,7 +83,6 @@ def extract_sbi_data():
     standardized['Yield'] = pd.to_numeric(data_df.get('YTM %', ''), errors='coerce')
     standardized['Rating'] = data_df.get('Rating / Industry^', '')
     standardized['Quantity'] = pd.to_numeric(data_df.get('Quantity', ''), errors='coerce')
-    standardized['YTC'] = pd.to_numeric(data_df.get('YTC % ##', ''), errors='coerce')
     
     # SBI typically doesn't have maturity dates in instrument names
     standardized['Maturity Date'] = None
