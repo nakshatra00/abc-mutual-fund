@@ -1,21 +1,44 @@
 #!/usr/bin/env python3
 """
-Kotak Corporate Bond Fund Data Extractor
-Fixed extractor with correct column mapping
+KOTAK CORPORATE BOND FUND EXTRACTOR
+===================================
+
+PURPOSE:
+Extracts portfolio data from Kotak Mahindra AMC's consolidated SEBI reports.
+Handles specific Excel formatting and column structure used by Kotak.
+
+DATA SOURCE: Kotak_ConsolidatedSEBIPortfolio<date>.xls
+SHEET: KCB (Kotak Corporate Bond)
+FORMAT SPECIFICS:
+- Header row: 2 (Excel numbering)
+- Data starts: Row 6
+- Uses old .xls format requiring xlrd engine
+- Standard column structure with consistent naming
+
+KEY FEATURES:
+- ISIN validation and filtering
+- Market value aggregation
+- Rating and yield data capture
+- No maturity date extraction (not in instrument names)
+
+TECHNICAL NOTES:
+- Requires xlrd version 2.0+ for .xls file support
+- Uses fallback engine logic for Excel compatibility
+- Implements robust error handling for file reading
 """
 
 import pandas as pd
 from pathlib import Path
 
 def is_valid_isin(isin):
-    """Check if ISIN is valid"""
+    """Validate ISIN format: 12 characters starting with 2 letters"""
     if not isin or pd.isna(isin):
         return False
     isin = str(isin).strip().upper()
     return len(isin) == 12 and isin[:2].isalpha()
 
 def extract_kotak_data():
-    """Extract Kotak data with correct column mapping"""
+    """Extract and standardize Kotak portfolio data with validation"""
     print("🔍 EXTRACTING KOTAK DATA")
     print("=" * 40)
     

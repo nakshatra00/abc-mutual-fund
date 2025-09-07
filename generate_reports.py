@@ -1,7 +1,30 @@
 #!/usr/bin/env python3
 """
-Report Generation Script
-Automates the creation of all PDF reports using Quarto
+QUARTO PDF REPORT GENERATION SYSTEM
+===================================
+
+PURPOSE:
+Automated report generation using Quarto templates. Converts prepared analytical
+data into professional PDF reports for mutual fund portfolio analysis.
+
+REPORT TYPES:
+1. Overview Report - Cross-fund comparative analysis (overview_report.qmd)
+2. Individual Fund Reports - Detailed per-fund analysis (fund_report.qmd)
+
+PROCESS:
+1. Validate Quarto installation and dependencies
+2. Copy prepared data to working directory alongside templates
+3. Execute Quarto render commands for each report
+4. Move generated PDFs to reports/ directory
+5. Clean up temporary files
+
+TECHNICAL DETAILS:
+- Uses Quarto with Python/Jupyter execution engine
+- Requires prepared datasets from analysis_engine.py
+- Templates support both individual and overview analysis modes
+- PDF generation includes charts, tables, and formatted text
+
+DEPENDENCIES: Quarto CLI, Python packages (pandas, matplotlib, seaborn)
 """
 
 import subprocess
@@ -21,7 +44,7 @@ class ReportGenerator:
         self.project_root = Path(__file__).parent  # abc-mutual-fund directory
         
     def check_dependencies(self):
-        """Check if required tools are available"""
+        """Validate Quarto installation and required system dependencies"""
         print("🔍 Checking dependencies...")
         
         # Check for Quarto

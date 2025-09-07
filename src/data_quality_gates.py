@@ -1,7 +1,30 @@
 #!/usr/bin/env python3
 """
-Data Quality Gates for Corporate Bond Fund Portfolio Analysis
-Implements comprehensive validation rules that must pass before data publication.
+CORPORATE BOND FUND DATA QUALITY VALIDATION SYSTEM
+=================================================
+
+PURPOSE:
+Comprehensive data quality validation framework that ensures portfolio data
+meets production standards before reports are generated. Implements 9 critical
+quality gates that must pass for data to be considered publication-ready.
+
+QUALITY GATES:
+1. Date Integrity - Validates date formats and reasonableness
+2. NAV Sanity Check - Ensures portfolio percentages sum to ~100%
+3. Duplicate ISIN Check - Identifies duplicate securities within funds
+4. ISIN Format Validation - Validates 12-character ISIN codes
+5. Type Casting & Data Integrity - Ensures numeric fields are parseable
+6. Outlier Detection - Flags unusual values for review
+7. Data Coverage Analysis - Ensures minimum data coverage thresholds
+8. Business Logic Validation - Checks concentration and diversification
+9. Standardized Ratings Check - Validates rating standardization success
+
+THRESHOLDS (CONFIGURABLE):
+- NAV Range: 92-102% (accounts for cash holdings)
+- Coverage Minimums: ISIN 100%, Rating 80%, Yield 70%, Maturity 50%
+- Concentration Limits: Top 10 holdings <50%, Individual <25%
+
+OUTPUT: Pass/Fail determination with detailed issue reporting
 """
 
 import pandas as pd
@@ -12,7 +35,7 @@ from datetime import datetime, timedelta
 import warnings
 
 class DataQualityGates:
-    """Comprehensive data quality validation system"""
+    """Production-ready data validation system with configurable thresholds"""
     
     def __init__(self, report_date="2025-07-31"):
         self.report_date = report_date
@@ -22,7 +45,7 @@ class DataQualityGates:
         self.passed_gates = []
         
     def validate_all_funds(self):
-        """Run all validation gates for all funds"""
+        """Execute all validation gates and generate final verdict"""
         print("🚪 CORPORATE BOND FUND DATA QUALITY GATES")
         print("=" * 60)
         print(f"📅 Report Date: {self.report_date}")

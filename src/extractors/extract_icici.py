@@ -1,7 +1,29 @@
 #!/usr/bin/env python3
 """
-ICICI Corporate Bond Fund Data Extractor
-Dedicated extractor for ICICI Prudential Corporate Bond Fund
+ICICI PRUDENTIAL CORPORATE BOND FUND EXTRACTOR
+==============================================
+
+PURPOSE:
+Extracts portfolio data from ICICI Prudential AMC's corporate bond fund reports.
+Handles ICICI's Excel format with dynamic header detection and validation.
+
+DATA SOURCE: ICICI Prudential Corporate Bond Fund.xlsx
+FORMAT SPECIFICS:
+- Header row: Dynamic detection using keyword matching
+- Standard .xlsx format with clean structure
+- No maturity dates in instrument names
+- Comprehensive rating and yield data
+
+KEY FEATURES:
+- Automatic header row detection
+- ISIN validation and filtering
+- Market value and NAV percentage processing
+- Rating standardization compatibility
+
+TECHNICAL NOTES:
+- Clean data format with minimal preprocessing needed
+- Reliable column naming conventions
+- Good data quality with high coverage rates
 """
 
 import pandas as pd

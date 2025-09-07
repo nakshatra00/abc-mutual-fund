@@ -1,7 +1,29 @@
 #!/usr/bin/env python3
 """
-Complete Analysis Pipeline
-Runs both analysis and report generation in sequence
+COMPLETE MUTUAL FUND ANALYSIS AND REPORTING PIPELINE
+===================================================
+
+PURPOSE:
+Master orchestration script that coordinates the entire analysis and reporting
+workflow. Provides flexible execution options for different use cases.
+
+WORKFLOW:
+1. Data Analysis (analysis_engine.py) - Process consolidated data
+2. Report Generation (generate_reports.py) - Create PDF reports using Quarto
+
+EXECUTION MODES:
+- Full Pipeline: Analysis + All Reports (default)
+- Analysis Only: Just data processing, no reports
+- Reports Only: Skip analysis, use existing prepared data
+- Overview Only: Generate just the overview report
+
+INPUT: Consolidated CSV from final_consolidation.py
+OUTPUT: PDF reports in output/reports/ directory
+
+COMMAND LINE:
+python run_analysis.py <csv_path> [--analysis-only] [--reports-only] [--overview-only]
+
+DEPENDENCIES: analysis_engine.py, generate_reports.py, Quarto installation
 """
 
 import sys

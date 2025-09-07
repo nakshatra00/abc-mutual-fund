@@ -1,7 +1,31 @@
 #!/usr/bin/env python3
 """
-Rating Standardizer Utility
-Standardizes rating formats across different agencies (CRISIL, ICRA, CARE, etc.)
+CREDIT RATING STANDARDIZATION SYSTEM
+===================================
+
+PURPOSE:
+Harmonizes credit ratings across different rating agencies (CRISIL, ICRA, CARE, 
+India Ratings, Brickwork) into a unified rating scale for consistent analysis.
+
+PROBLEM SOLVED:
+Different AMCs use different rating agencies, creating inconsistent rating formats:
+- CRISIL AAA vs ICRA AAA vs CARE AAA (all equivalent)
+- Agency prefixes: "CRISIL AAA", "ICRA A1+", "IND AA+"
+- Sovereign ratings: "GOVT", "SOVEREIGN", "RBI"
+
+STANDARDIZATION MAPPING:
+- All AAA ratings -> "AAA"
+- All AA+ ratings -> "AA+"
+- Sovereign/Government -> "SOVEREIGN"
+- Money market (A1+, P1+) -> "A1+"
+
+CONFIGURATION:
+Uses config/rating_map.yml for flexible mapping rules
+Supports regex patterns for complex rating formats
+
+OUTPUT:
+Adds 'Standardized Rating' column to dataframes
+Enables cross-fund rating distribution analysis
 """
 
 import pandas as pd
@@ -11,7 +35,7 @@ from pathlib import Path
 
 
 def load_rating_config():
-    """Load rating mapping configuration from YAML file"""
+    """Load rating agency mapping rules from YAML configuration"""
     config_path = Path("config/rating_map.yml")
     with open(config_path, 'r') as f:
         return yaml.safe_load(f)
@@ -19,14 +43,12 @@ def load_rating_config():
 
 def extract_rating_from_text(rating_text, config):
     """
-    Extract and standardize rating from text containing agency prefix
+    Extract standardized rating from agency-prefixed text
     
-    Args:
-        rating_text (str): Original rating text (e.g., "CRISIL AAA", "ICRA AA+")
-        config (dict): Rating configuration from YAML
-        
-    Returns:
-        str: Standardized rating or original if not found
+    Examples:
+        "CRISIL AAA" -> "AAA"
+        "ICRA A1+" -> "A1+"  
+        "GOVT" -> "SOVEREIGN"
     """
     if pd.isna(rating_text) or not isinstance(rating_text, str):
         return None

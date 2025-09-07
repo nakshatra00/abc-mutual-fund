@@ -1,3 +1,35 @@
+"""
+EXCEL VISUALIZATION AND DASHBOARD SYSTEM
+=======================================
+
+PURPOSE:
+Creates interactive Excel dashboards with charts and formatted tables for
+mutual fund portfolio analysis. Provides alternative to PDF reports for
+Excel-based stakeholder consumption.
+
+DASHBOARD FEATURES:
+- Portfolio overview with summary metrics
+- Rating distribution pie charts
+- Fund comparison bar charts
+- Top holdings analysis tables
+- Maturity profile visualizations
+- Interactive Excel charts with data labels
+
+TECHNICAL IMPLEMENTATION:
+- Uses openpyxl for Excel manipulation
+- Creates multiple worksheet tabs for different views
+- Formats data tables with professional styling
+- Embeds charts directly in Excel workbook
+
+OUTPUT STRUCTURE:
+- Overview Dashboard (summary charts and metrics)
+- Fund Details (individual fund breakdowns)
+- Rating Analysis (credit distribution)
+- Holdings Analysis (concentration metrics)
+
+USAGE: Called after main analysis for Excel output generation
+"""
+
 import pandas as pd
 import numpy as np
 from openpyxl import load_workbook
@@ -7,7 +39,7 @@ from openpyxl.styles import Font, Alignment, PatternFill
 from openpyxl.utils.dataframe import dataframe_to_rows
 
 def add_dashboard_header(sheet):
-    """Add dashboard header"""
+    """Add formatted header section to dashboard worksheet"""
     sheet['A1'] = '🏦 CORPORATE BOND FUND ANALYSIS DASHBOARD'
     sheet['A1'].font = Font(size=16, bold=True)
     sheet['A2'] = 'Portfolio Analysis Across 6 Major AMCs - July 2025'

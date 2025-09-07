@@ -1,7 +1,31 @@
 #!/usr/bin/env python3
 """
-Final Consolidation of All 6 Corporate Bond Funds
-Runs all extractors and creates the comprehensive analysis dataset
+CORPORATE BOND FUNDS - FINAL CONSOLIDATION PIPELINE
+==================================================
+
+PURPOSE:
+Master orchestration script that runs all 6 fund extractors and creates
+the final consolidated dataset for analysis. This is the main entry point
+for the entire data processing pipeline.
+
+PROCESS FLOW:
+1. Execute all individual fund extractors (ABSLF, HDFC, ICICI, KOTAK, NIPPON, SBI)
+2. Load and validate individual fund CSV files
+3. Standardize credit ratings across different agencies
+4. Combine into single consolidated dataset
+5. Generate summary statistics and quality metrics
+
+INPUT: Raw Excel files in data/raw/2025-07-31/
+OUTPUT: Corporate_Bond_Funds_Consolidated_Analysis.csv
+
+KEY FEATURES:
+- Dynamic extractor loading using importlib
+- Error handling for missing/failed extractions
+- Cross-fund rating standardization
+- Portfolio value calculations and summaries
+- Comprehensive logging and progress tracking
+
+DEPENDENCIES: All extractor modules, rating_standardizer.py
 """
 
 import pandas as pd
@@ -10,7 +34,7 @@ from rating_standardizer import standardize_ratings
 import sys
 
 def run_all_extractors():
-    """Run all extractor scripts to generate individual fund files"""
+    """Execute all fund extractor scripts in sequence with error handling"""
     print("🚀 RUNNING ALL EXTRACTORS")
     print("=" * 50)
     

@@ -1,7 +1,31 @@
 #!/usr/bin/env python3
 """
-HDFC Corporate Bond Fund Data Extractor
-Dedicated extractor for HDFC Corporate Bond Fund
+HDFC CORPORATE BOND FUND EXTRACTOR
+=================================
+
+PURPOSE:
+Extracts portfolio data from HDFC AMC's monthly corporate bond fund reports.
+Handles HDFC-specific format including unique maturity date coding system.
+
+DATA SOURCE: Monthly HDFC Corporate Bond Fund - <date>.xlsx
+SHEET: Portfolio (typically first sheet)
+FORMAT SPECIFICS:
+- Header row: Dynamic detection
+- Maturity format: "MAT 181139" = 18/11/2039
+- Standard Excel .xlsx format
+- Consistent column naming patterns
+
+KEY CHALLENGES:
+- Decoding HDFC's proprietary maturity date format (DDMMYY)
+- Dynamic header row detection
+- ISIN validation and filtering
+- Handling merged cells and formatting artifacts
+
+MATURITY PARSING:
+MAT 181139 -> 18/11/39 -> 18/11/2039 (assumes 20xx century)
+MAT 251225 -> 25/12/25 -> 25/12/2025
+
+OUTPUT: Standardized CSV with decoded maturity dates
 """
 
 import pandas as pd
@@ -10,7 +34,7 @@ from pathlib import Path
 from datetime import datetime
 
 def parse_date_from_name(name):
-    """Extract maturity date from HDFC instrument name"""
+    """Decode HDFC maturity format: MAT DDMMYY -> DD/MM/20YY"""
     if not name:
         return None
     

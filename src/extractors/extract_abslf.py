@@ -1,7 +1,27 @@
 #!/usr/bin/env python3
 """
-ABSLF Corporate Bond Fund Data Extractor
-Dedicated extractor for Aditya Birla Sun Life Corporate Bond Fund
+ABSLF (ADITYA BIRLA SUN LIFE) CORPORATE BOND FUND EXTRACTOR
+==========================================================
+
+PURPOSE:
+Extracts and standardizes portfolio data from ABSLF SEBI monthly reports.
+Handles ABSLF-specific Excel format with embedded formulas and merged cells.
+
+DATA SOURCE: ABSLF_SEBI_Monthly_Portfolio <date>.xlsm
+SHEET: BSLIF
+FORMAT SPECIFICS:
+- Header row: 4 (Excel numbering)
+- Maturity dates in parentheses: (15/09/2028)
+- Yield values in decimal format (converted to percentage)
+- Market values include line breaks (_x000D_)
+
+KEY CHALLENGES:
+- Yield conversion from decimal (0.065) to percentage (6.5%)
+- NAV percentage validation and decimal conversion
+- Maturity date parsing from instrument names
+- Excel formula artifacts in column names
+
+OUTPUT: Standardized CSV with ISIN, yields, ratings, maturities
 """
 
 import pandas as pd
@@ -10,7 +30,7 @@ from pathlib import Path
 from datetime import datetime
 
 def parse_date_from_name(name):
-    """Extract maturity date from ABSLF instrument name"""
+    """Extract maturity date from ABSLF instrument name format: (DD/MM/YYYY)"""
     if not name:
         return None
     

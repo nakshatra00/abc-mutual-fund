@@ -1,3 +1,32 @@
+"""
+MUTUAL FUND DATA PROCESSING UTILITIES
+====================================
+
+PURPOSE:
+Common utility functions for data validation, cleaning, and standardization
+across all mutual fund extractors and analysis modules.
+
+CORE FUNCTIONS:
+- ISIN validation and formatting
+- Text cleaning and normalization
+- Date parsing and standardization
+- Numeric value processing
+- Data type validation
+
+ISIN VALIDATION:
+- Format: IN + 10 alphanumeric characters (total 12)
+- Example: INE261F08EK5 (valid), ABC123 (invalid)
+- Handles pandas NaN and various input types
+
+TEXT CLEANING:
+- Removes Excel artifacts (_x000D_, line breaks)
+- Standardizes spacing and formatting
+- Handles None/NaN values gracefully
+
+USAGE:
+Used by all extractor modules for consistent data processing
+"""
+
 import re
 import math
 from datetime import datetime
@@ -7,7 +36,7 @@ import pandas as pd
 ISIN_RE = re.compile(r"^IN[A-Z0-9]{10}$")
 
 def is_valid_isin(isin):
-    """Check if ISIN is valid (12 characters, starts with IN, followed by 10 alphanumeric)"""
+    """Validate Indian ISIN format: IN followed by 10 alphanumeric characters"""
     if not isin or pd.isna(isin):
         return False
     isin_str = str(isin).strip().upper()

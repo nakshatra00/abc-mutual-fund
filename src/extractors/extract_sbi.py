@@ -1,7 +1,30 @@
 #!/usr/bin/env python3
 """
-SBI Corporate Bond Fund Data Extractor
-Dedicated extractor for SBI Corporate Bond Fund
+SBI MUTUAL FUND EXTRACTOR
+=========================
+
+PURPOSE:
+Extracts portfolio data from SBI Mutual Fund's consolidated monthly reports.
+Handles SBI's comprehensive Excel format with multiple fund data.
+
+DATA SOURCE: SBI_All-Schemes-Monthly-Portfolio---as-on-<date>.xlsx
+FORMAT SPECIFICS:
+- Multi-sheet workbook with fund-specific sheets
+- Target sheet: Contains corporate bond fund data
+- Header row detection required
+- Standard .xlsx format
+
+KEY CHALLENGES:
+- Multi-fund workbook requiring sheet selection
+- Dynamic sheet name handling
+- ISIN validation across varied data quality
+- Market value aggregation and validation
+
+TECHNICAL FEATURES:
+- Automatic sheet detection for corporate bond funds
+- Robust data validation and filtering
+- Market value calculations and summaries
+- Error handling for missing or corrupted data
 """
 
 import pandas as pd

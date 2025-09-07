@@ -1,7 +1,34 @@
 #!/usr/bin/env python3
 """
-Mutual Fund Portfolio Analysis Engine
-Generates comprehensive PDF reports from consolidated portfolio data
+MUTUAL FUND PORTFOLIO ANALYSIS ENGINE
+====================================
+
+PURPOSE:
+This module processes consolidated mutual fund portfolio data and generates 
+comprehensive analytical datasets for report generation. It standardizes 
+inconsistent data formats across 6 different AMCs and creates comparative 
+metrics for portfolio analysis.
+
+KEY FUNCTIONS:
+- Data standardization and cleaning
+- Issuer identification and consolidation  
+- Credit rating analysis and bucketing
+- Yield distribution analysis
+- Maturity profiling (where available)
+- Portfolio concentration metrics
+- Cross-fund comparative analytics
+
+INPUT: Consolidated CSV file from final_consolidation.py
+OUTPUT: Prepared datasets for Quarto report generation
+
+USAGE:
+python analysis_engine.py <consolidated_csv_path>
+
+TECHNICAL NOTES:
+- Handles missing yield/maturity data gracefully
+- Uses regex for issuer name extraction from varied formats
+- Implements weighted calculations for portfolio metrics
+- Maintains AMC-specific adjustments for data quirks
 """
 
 import pandas as pd
@@ -21,7 +48,7 @@ class PortfolioAnalyzer:
         self.prepared_data_dir = None
         
     def load_data(self):
-        """Load and prepare the consolidated CSV data"""
+        """Load consolidated portfolio data and setup output directories"""
         self.df = pd.read_csv(self.csv_path)
         
         # Create output directories
@@ -277,14 +304,22 @@ class PortfolioAnalyzer:
         for fund in self.df['Fund Name'].unique():
             fund_data = self.df[self.df['Fund Name'] == fund].copy()
             
+            # Calculate weighted average yield (more meaningful than simple average)
+            yield_data = fund_data.dropna(subset=['Yield', 'Market Value (Lacs)'])
+            weighted_avg_yield = np.average(yield_data['Yield'], 
+                                          weights=yield_data['Market Value (Lacs)']) if len(yield_data) > 0 else 0
+            
+            # Calculate AAA percentage
+            aaa_value = fund_data[fund_data['Standardized Rating'] == 'AAA']['Market Value (Lacs)'].sum()
+            total_value = fund_data['Market Value (Lacs)'].sum()
+            aaa_pct = (aaa_value / total_value * 100) if total_value > 0 else 0
+            
             metrics = {
                 'Fund_Name': fund,
                 'Total_Holdings': len(fund_data),
-                'Total_Value_Lacs': fund_data['Market Value (Lacs)'].sum(),
-                'Avg_Yield': fund_data['Yield'].mean(),
-                'Weighted_Avg_Yield': np.average(fund_data['Yield'].dropna(), 
-                                               weights=fund_data[fund_data['Yield'].notna()]['Market Value (Lacs)']),
-                'Top_Rating_Pct': fund_data[fund_data['Standardized Rating'] == 'AAA']['Market Value (Lacs)'].sum() / fund_data['Market Value (Lacs)'].sum() * 100,
+                'Total_Value_Lacs': total_value,
+                'Weighted_Avg_Yield': weighted_avg_yield,
+                'Top_Rating_Pct': aaa_pct,
                 'Top_10_Concentration': fund_data.nlargest(10, 'Market Value (Lacs)')['% to NAV'].sum()
             }
             fund_metrics.append(metrics)

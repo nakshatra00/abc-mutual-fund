@@ -1,7 +1,29 @@
 #!/usr/bin/env python3
 """
-Nippon Corporate Bond Fund Data Extractor
-Dedicated extractor for Nippon India Corporate Bond Fund
+NIPPON INDIA MUTUAL FUND EXTRACTOR
+==================================
+
+PURPOSE:
+Extracts portfolio data from Nippon India Mutual Fund's monthly reports.
+Handles Nippon's specific Excel formatting and data structure.
+
+DATA SOURCE: NIMF-MONTHLY-PORTFOLIO-<date>.xls
+FORMAT SPECIFICS:
+- Old .xls format requiring xlrd engine
+- Dynamic header detection needed
+- Standard corporate bond fund layout
+- No maturity information in instrument names
+
+KEY FEATURES:
+- ISIN validation and data filtering
+- Market value and percentage calculations
+- Rating and yield data extraction
+- Robust error handling for Excel variations
+
+TECHNICAL CONSIDERATIONS:
+- Requires xlrd 2.0+ for .xls compatibility
+- Dynamic column mapping for flexibility
+- Handles missing data gracefully
 """
 
 import pandas as pd
