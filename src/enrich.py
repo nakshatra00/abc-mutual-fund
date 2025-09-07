@@ -66,14 +66,34 @@ def enrich(df: pd.DataFrame, config_dir: Path):
     rating_cfg = load_rating_map(config_dir)
     as_of = datetime.strptime(buckets["as_of"], "%Y-%m-%d").date()
 
+    # Simple maturity processing - single column approach
+    # First try to find existing maturity column
     mat_col = None
     for col in df.columns:
         if "maturity" in col.lower():
             mat_col = col; break
-    df["Maturity_from_col"] = pd.to_datetime(df[mat_col], dayfirst=True, errors="coerce").dt.date if mat_col else None
-    df["Maturity_from_name"] = df["Name of the Instrument"].map(parse_date_from_text)
-    df["Maturity_Final"] = df["Maturity_from_col"]
-    df.loc[df["Maturity_Final"].isna(), "Maturity_Final"] = df.loc[df["Maturity_Final"].isna(), "Maturity_from_name"]
+    
+    # Extract maturity date from column if available, otherwise from name
+    if mat_col and df[mat_col].notna().any():
+        df["Maturity Date"] = pd.to_datetime(df[mat_col], dayfirst=True, errors="coerce").dt.date
+    else:
+        df["Maturity Date"] = None
+    
+    # For rows without maturity from column, try parsing from instrument name
+    missing_maturity = df["Maturity Date"].isna()
+    if missing_maturity.any():
+        df.loc[missing_maturity, "Maturity Date"] = df.loc[missing_maturity, "Name of the Instrument"].map(parse_date_from_text)
+
+    # Add fund name based on AMC
+    fund_names = {
+        'ABSLF': 'Aditya Birla Sun Life Corporate Bond Fund',
+        'HDFC': 'HDFC Corporate Bond Fund', 
+        'ICICI': 'ICICI Prudential Corporate Bond Fund',
+        'KOTAK': 'Kotak Corporate Bond Fund',
+        'NIPPON': 'Nippon India Corporate Bond Fund',
+        'SBI': 'SBI Corporate Bond Fund'
+    }
+    df["Fund Name"] = df["AMC"].map(fund_names)
 
     df["Instrument Type"] = df["Name of the Instrument"].map(classify_instrument)
     df["Issuer Name"] = df["Name of the Instrument"].map(extract_issuer)
@@ -81,7 +101,7 @@ def enrich(df: pd.DataFrame, config_dir: Path):
 
     def bucket_years(row):
         itype = row["Instrument Type"]
-        dt = row["Maturity_Final"]
+        dt = row["Maturity Date"]
         if itype in ["Overnight"]:
             return "<1"
         if itype in ["T-Bill","CP","CD"] and (dt is None or pd.isna(dt)):

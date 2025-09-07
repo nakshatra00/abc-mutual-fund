@@ -83,7 +83,7 @@ def run(as_of: str, raw_dir: Path, out_dir: Path, config_dir: Path):
         wytm, cov_yield = weighted_avg_yield(sub)
         mv = sub["Market/Fair Value (Rs. in Lacs)"].fillna(0.0)
         total = mv.sum()
-        with_mat = mv[sub["Maturity_Final"].notna()].sum()
+        with_mat = mv[sub["Maturity Date"].notna()].sum()
         cov_mat = (with_mat/total*100.0) if total else 0.0
 
         by_bucket(sub, "Maturity Bucket").to_excel(writer, sheet_name=f"{amc}_Maturity", index=False)
