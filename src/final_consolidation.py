@@ -1,12 +1,59 @@
 #!/usr/bin/env python3
 """
 Final Consolidation of All 6 Corporate Bond Funds
-Creates the comprehensive analysis dataset
+Runs all extractors and creates the comprehensive analysis dataset
 """
 
 import pandas as pd
 from pathlib import Path
 from rating_standardizer import standardize_ratings
+import sys
+
+def run_all_extractors():
+    """Run all extractor scripts to generate individual fund files"""
+    print("🚀 RUNNING ALL EXTRACTORS")
+    print("=" * 50)
+    
+    # Import sys to add the src directory to the path
+    import sys
+    from pathlib import Path
+    
+    # Add src directory to Python path so we can import from extractors
+    src_path = Path(__file__).parent
+    if str(src_path) not in sys.path:
+        sys.path.insert(0, str(src_path))
+    
+    extractors = [
+        ('ABSLF', 'extractors.extract_abslf', 'extract_abslf_data'),
+        ('HDFC', 'extractors.extract_hdfc', 'extract_hdfc_data'),
+        ('ICICI', 'extractors.extract_icici', 'extract_icici_data'),
+        ('KOTAK', 'extractors.extract_kotak', 'extract_kotak_data'),
+        ('NIPPON', 'extractors.extract_nippon', 'extract_nippon_data'),
+        ('SBI', 'extractors.extract_sbi', 'extract_sbi_data')
+    ]
+    
+    success_count = 0
+    for fund_name, module_name, function_name in extractors:
+        try:
+            print(f"\n📊 Processing {fund_name}...")
+            
+            # Import the module
+            module = __import__(module_name, fromlist=[function_name])
+            
+            # Get and call the extraction function
+            extraction_function = getattr(module, function_name)
+            extraction_function()
+            
+            print(f"✅ {fund_name} extraction completed")
+            success_count += 1
+            
+        except Exception as e:
+            print(f"❌ {fund_name} extraction failed: {str(e)}")
+            import traceback
+            traceback.print_exc()
+    
+    print(f"\n🎯 EXTRACTION SUMMARY: {success_count}/{len(extractors)} funds processed successfully")
+    return success_count > 0
 
 def consolidate_all_funds():
     """Consolidate all 6 fund extracts into final dataset"""
@@ -131,5 +178,22 @@ def consolidate_all_funds():
     
     return consolidated, fund_summary
 
-if __name__ == "__main__":
+def main():
+    """Main execution function"""
+    print("🎯 CORPORATE BOND FUNDS - COMPLETE ANALYSIS PIPELINE")
+    print("=" * 60)
+    
+    # Step 1: Run all extractors
+    extraction_success = run_all_extractors()
+    
+    if not extraction_success:
+        print("❌ Extraction phase failed - cannot proceed with consolidation")
+        return
+    
+    print("\n" + "=" * 60)
+    
+    # Step 2: Consolidate all funds
     consolidate_all_funds()
+
+if __name__ == "__main__":
+    main()

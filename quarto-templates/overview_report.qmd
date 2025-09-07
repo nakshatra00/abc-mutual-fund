@@ -1,6 +1,8 @@
 ---
 title: "Mutual Fund Portfolio Analysis - Overview Report"
 subtitle: "Cross-Fund Comparative Analysis"
+author: "Portfolio Analytics Team"
+date: today
 format:
   pdf:
     documentclass: article
@@ -13,6 +15,11 @@ format:
     colorlinks: true
     fig-cap-location: bottom
     tbl-cap-location: top
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    fig-pos: "H"
+    tbl-pos: "H"
 execute:
   echo: false
   warning: false
@@ -142,7 +149,7 @@ overview_display = overview_display[['Fund_Name', 'Total_Holdings', 'Total_Value
                                    'Weighted_Avg_Yield', 'Top_Rating_Pct', 'Top_10_Concentration']]
 overview_display.columns = ['Fund', 'Holdings', 'Portfolio Value', 'Yield', 'AAA %', 'Top 10 Conc.']
 
-print(overview_display.to_string(index=False))
+display(overview_display)
 ```
 
 ---
@@ -187,11 +194,12 @@ plt.show()
 #| tbl-cap: "Credit Rating Distribution Summary"
 rating_summary = overall_ratings.copy()
 rating_summary['Market_Value_Lacs'] = rating_summary['Market_Value_Lacs'].apply(lambda x: f"₹{x:,.0f}")
-rating_summary['Percentage'] = (overall_ratings['Market_Value_Lacs'] / overall_ratings['Market_Value_Lacs'].sum() * 100).apply(lambda x: f"{x:.1f}%")
-rating_summary = rating_summary[['Rating', 'Holdings_Count', 'Market_Value_Lacs', 'Percentage']]
-rating_summary.columns = ['Rating', 'Holdings', 'Market Value', 'Portfolio %']
+rating_summary['NAV_Percentage'] = rating_summary['NAV_Percentage'].apply(lambda x: f"{x:.1f}%")
 
-print(rating_summary.to_string(index=False))
+rating_summary = rating_summary[['Rating', 'Holdings_Count', 'Market_Value_Lacs', 'NAV_Percentage']]
+rating_summary.columns = ['Rating', 'Holdings', 'Market Value', '% of Total']
+
+display(rating_summary)
 ```
 
 ---
@@ -232,7 +240,7 @@ issuer_display['Portfolio_Pct'] = (top_issuers['Market_Value_Lacs'] / summary_st
 issuer_display = issuer_display[['Issuer', 'Holdings_Count', 'Market_Value_Lacs', 'Portfolio_Pct']]
 issuer_display.columns = ['Issuer', 'Holdings', 'Market Value', 'Portfolio %']
 
-print(issuer_display.to_string(index=False))
+display(issuer_display)
 ```
 
 ---
@@ -322,7 +330,7 @@ for _, fund in overview_metrics.iterrows():
 
 conc_df = pd.DataFrame(concentration_metrics)
 conc_df.columns = ['Fund', 'Top 10 Conc.', 'AAA Rating %', 'Total Holdings', 'Avg Yield']
-print(conc_df.to_string(index=False))
+display(conc_df)
 ```
 
 ---
@@ -354,6 +362,6 @@ print("4. **Maturity Profile**: Where available, the portfolio shows balanced ma
 #| output: asis
 report_time = summary_stats['analysis_date'][:19].replace('T', ' ')
 print(f"*Report Generated: {report_time}*")
+print()
+print(f"*Analysis covers {summary_stats['total_holdings']} holdings across {len(summary_stats['funds_analyzed'])} funds*")
 ```
-
-*Analysis covers `{python} summary_stats['total_holdings']` holdings across `{python} len(summary_stats['funds_analyzed'])` funds*

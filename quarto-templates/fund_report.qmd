@@ -1,6 +1,8 @@
 ---
 title: "Fund Portfolio Analysis Report"
 subtitle: "Individual Fund Deep Dive"
+author: "Portfolio Analytics Team"
+date: today
 format:
   pdf:
     documentclass: article
@@ -13,6 +15,11 @@ format:
     colorlinks: true
     fig-cap-location: bottom
     tbl-cap-location: top
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    fig-pos: "H"
+    tbl-pos: "H"
 execute:
   echo: false
   warning: false
@@ -160,7 +167,7 @@ if len(fund_top_holdings) > 0:
     top_display_clean = top_display[display_cols]
     top_display_clean.columns = ['#', 'Instrument', 'Market Value', '% NAV', 'Yield', 'Rating']
     
-    print(top_display_clean.to_string(index=False))
+    display(top_display_clean)
 else:
     print("No top holdings data available")
 ```
@@ -254,7 +261,7 @@ if len(fund_ratings) > 0:
     rating_summary.columns = ['Fund', 'Rating', 'Market Value', 'NAV %', 'Holdings Count']
     rating_display = rating_summary[['Rating', 'Holdings Count', 'Market Value', 'NAV %']]
     
-    print(rating_display.to_string(index=False))
+    display(rating_display)
 else:
     print("No rating data available")
 ```
@@ -303,7 +310,7 @@ if len(fund_issuers) > 0:
     issuer_display = issuer_display[['Issuer', 'Holdings_Count', 'Market_Value_Lacs', 'NAV_Percentage']]
     issuer_display.columns = ['Issuer', 'Holdings', 'Market Value', '% to NAV']
     
-    print(issuer_display.to_string(index=False))
+    display(issuer_display)
 else:
     print("No issuer concentration data available")
 ```
@@ -369,7 +376,7 @@ if len(fund_yields_data) > 0:
     yield_display = yield_summary[['Yield_Bucket', 'Holdings_Count', 'Market_Value_Lacs', 'NAV_Percentage']]
     yield_display.columns = ['Yield Bucket', 'Holdings', 'Market Value', '% to NAV']
     
-    print(yield_display.to_string(index=False))
+    display(yield_display)
 else:
     print("No yield bucket data available")
 ```
@@ -422,7 +429,7 @@ if len(fund_maturity) > 0 and len(fund_maturity[fund_maturity['Maturity_Bucket']
     maturity_display = maturity_summary[['Maturity_Bucket', 'Holdings_Count', 'Market_Value_Lacs', 'NAV_Percentage']]
     maturity_display.columns = ['Maturity Bucket', 'Holdings', 'Market Value', '% to NAV']
     
-    print(maturity_display.to_string(index=False))
+    display(maturity_display)
 else:
     print("**No detailed maturity information available for this fund**")
     print("\nMaturity data is limited in the current dataset. Where available, it will be displayed above.")
@@ -461,32 +468,50 @@ performance_metrics.append(['Average Holding Size', f"₹{avg_holding_size:.0f} 
 
 # Create dataframe and display
 metrics_df = pd.DataFrame(performance_metrics, columns=['Metric', 'Value'])
-print(metrics_df.to_string(index=False))
+display(metrics_df)
 ```
 
 ---
 
-# Risk Assessment
-
-## Portfolio Risk Indicators
-
-**Credit Risk:**
-- Credit quality is maintained through focus on high-rated instruments
-- Rating distribution shows concentration in {python f"AAA rated holdings" if len(aaa_holdings) > 0 else "top-rated securities"}
-
-**Concentration Risk:**
-- Top 10 holdings represent {python f"{top_10_value:.1f}%" if 'top_10_value' in locals() else "a significant portion"} of the portfolio
-- Issuer diversification across {python len(fund_issuers)} different entities
-
-**Interest Rate Risk:**
-- Portfolio maturity profile {python "shows balanced distribution across time buckets" if len(fund_maturity) > 0 and len(fund_maturity[fund_maturity['Maturity_Bucket'] != 'No Maturity Info']) > 0 else "requires further maturity data for complete assessment"}
-
-**Yield Characteristics:**
-- Weighted average yield of {python f"{avg_yield:.2f}%"} indicates current income generation potential
-- Yield distribution across buckets shows portfolio positioning
+```{python}
+#| output: asis
+report_time = pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')
+print(f"*Fund Analysis Generated: {report_time}*")
+print()
+print(f"*Portfolio Data as of Analysis Date | Total Holdings: {total_holdings} | Total Value: ₹{total_value:,.0f} Lacs*")
+```
+```
 
 ---
 
-*Fund Analysis Generated: {python pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')}*
+```{python}
+#| output: asis
+report_time = pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')
+print(f"*Fund Analysis Generated: {report_time}*")
+print()
+print(f"*Portfolio Data as of Analysis Date | Total Holdings: {total_holdings} | Total Value: ₹{total_value:,.0f} Lacs*")
+```
+```
 
-*Portfolio Data as of Analysis Date | Total Holdings: {python total_holdings} | Total Value: ₹{python f"{total_value:,.0f}"} Lacs*
+---
+
+```{python}
+#| output: asis
+report_time = pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')
+print(f"*Fund Analysis Generated: {report_time}*")
+print()
+print(f"*Portfolio Data as of Analysis Date | Total Holdings: {total_holdings} | Total Value: ₹{total_value:,.0f} Lacs*")
+```
+```
+
+---
+
+```{python}
+#| output: asis
+report_time = pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')
+print(f"*Fund Analysis Generated: {report_time}*")
+print()
+print(f"*Portfolio Data as of Analysis Date | Total Holdings: {total_holdings} | Total Value: ₹{total_value:,.0f} Lacs*")
+```
+```
+

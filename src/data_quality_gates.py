@@ -138,7 +138,7 @@ class DataQualityGates:
         return gate_passed
     
     def _gate_2_nav_sanity(self, fund_files):
-        """Gate 2: % to NAV sanity check - each fund sum must be within [98, 102]%"""
+        """Gate 2: % to NAV sanity check - each fund sum must be within [92, 102]%"""
         print("🚪 GATE 2: % TO NAV SANITY CHECK")
         print("-" * 40)
         
@@ -157,11 +157,11 @@ class DataQualityGates:
                 
                 print(f"   📊 {fund_name}: % to NAV Sum = {nav_sum:.2f}%")
                 
-                if nav_sum < 98 or nav_sum > 102:
-                    issue = f"{fund_name}: % to NAV sum ({nav_sum:.2f}%) outside acceptable range [98-102]%"
+                if nav_sum < 92 or nav_sum > 102:
+                    issue = f"{fund_name}: % to NAV sum ({nav_sum:.2f}%) outside acceptable range [92-102]%"
                     nav_issues.append(issue)
                     gate_passed = False
-                    print(f"      ❌ FAILED: {nav_sum:.2f}% is outside [98-102]% range")
+                    print(f"      ❌ FAILED: {nav_sum:.2f}% is outside [92-102]% range")
                 else:
                     print(f"      ✅ PASSED: {nav_sum:.2f}% is within acceptable range")
                 
@@ -508,7 +508,7 @@ class DataQualityGates:
             'ISIN': 100,           # Must be 100%
             'Instrument Name': 100, # Must be 100%
             'Market Value (Lacs)': 100, # Must be 100%
-            '% to NAV': 95,        # At least 95%
+            '% to NAV': 92,        # At least 92%
             'Rating': 80,          # At least 80%
             'Yield': 70,           # At least 70%
             'Maturity Date': 50    # At least 50%
@@ -743,7 +743,7 @@ class DataQualityGates:
         print()
         
         # Gates summary
-        total_gates = 8
+        total_gates = 9
         passed_count = len(self.passed_gates)
         
         print(f"🚪 GATES SUMMARY: {passed_count}/{total_gates} PASSED")

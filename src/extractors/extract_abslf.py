@@ -115,6 +115,22 @@ def extract_abslf_data():
         nav_values = None
 
     # Standardize columns
+    yield_col = 'Yield'
+    if yield_col in data_df.columns:
+        sample_yield = pd.to_numeric(data_df[yield_col], errors='coerce').dropna().head(3)
+        print(f"📊 Sample Yield values: {list(sample_yield)}")
+        
+        # Check if values are in decimal format (0.065 = 6.5%) or percentage format (6.5)
+        if len(sample_yield) > 0 and sample_yield.max() < 1:
+            print("📊 Converting yield decimal format to percentage (multiplying by 100)")
+            yield_values = pd.to_numeric(data_df[yield_col], errors='coerce') * 100
+        else:
+            print("📊 Yield values already in percentage format")
+            yield_values = pd.to_numeric(data_df[yield_col], errors='coerce')
+    else:
+        print(f"❌ Column '{yield_col}' not found!")
+        yield_values = None
+    
     standardized = pd.DataFrame({
         'Fund Name': 'Aditya Birla Sun Life Corporate Bond Fund',
         'AMC': 'ABSLF',
@@ -122,7 +138,7 @@ def extract_abslf_data():
         'Instrument Name': data_df.get('Name of the Instrument', ''),
         'Market Value (Lacs)': pd.to_numeric(data_df[value_col], errors='coerce'),
         '% to NAV': nav_values,
-        'Yield': pd.to_numeric(data_df.get('Yield', ''), errors='coerce'),
+        'Yield': yield_values,
         'Rating': data_df.get('Rating', ''),
         'Quantity': pd.to_numeric(data_df.get('Quantity', ''), errors='coerce')
     })

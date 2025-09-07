@@ -32,10 +32,16 @@ def extract_kotak_data():
     
     # Read Excel file
     try:
-        df = pd.read_excel(file_path, sheet_name=sheet_name, header=None)
+        # For .xls files, try with openpyxl engine first, then xlrd
+        try:
+            df = pd.read_excel(file_path, sheet_name=sheet_name, header=None, engine='openpyxl')
+        except:
+            # If openpyxl fails, try with xlrd
+            df = pd.read_excel(file_path, sheet_name=sheet_name, header=None, engine='xlrd')
         print(f"📊 Raw sheet shape: {df.shape}")
     except Exception as e:
         print(f"❌ Error reading file: {e}")
+        print("💡 Try: pip install --upgrade xlrd openpyxl")
         return
     
     # Extract headers and data starting from actual data rows
