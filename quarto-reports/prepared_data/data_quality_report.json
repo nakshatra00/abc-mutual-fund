@@ -1,0 +1,88 @@
+{
+  "report_date": "2025-07-31",
+  "generated_at": "2025-09-07T16:13:30.032578",
+  "total_holdings": 922,
+  "total_value_lacs": 13675455.2,
+  "total_value_crores": 136754.552,
+  "amc_count": 6,
+  "amc_list": [
+    "ABSLF",
+    "HDFC",
+    "ICICI",
+    "KOTAK",
+    "NIPPON",
+    "SBI"
+  ],
+  "coverage_stats": {
+    "Yield": {
+      "coverage_pct": 99.24078091106291,
+      "missing_count": 7
+    },
+    "Standardized Rating": {
+      "coverage_pct": 99.13232104121475,
+      "missing_count": 8
+    },
+    "Maturity Date": {
+      "coverage_pct": 25.92190889370933,
+      "missing_count": 683
+    },
+    "% to NAV": {
+      "coverage_pct": 97.72234273318871,
+      "missing_count": 21
+    }
+  },
+  "amc_coverage": {
+    "ABSLF": {
+      "holdings_count": 224,
+      "nav_sum": 97.86940062129122,
+      "nav_sum_ok": true,
+      "yield_coverage": 99.55357142857143,
+      "rating_coverage": 99.55357142857143
+    },
+    "HDFC": {
+      "holdings_count": 228,
+      "nav_sum": 96.88,
+      "nav_sum_ok": true,
+      "yield_coverage": 99.56140350877193,
+      "rating_coverage": 99.56140350877193
+    },
+    "ICICI": {
+      "holdings_count": 199,
+      "nav_sum": 95.95058008116,
+      "nav_sum_ok": true,
+      "yield_coverage": 99.49748743718592,
+      "rating_coverage": 99.49748743718592
+    },
+    "KOTAK": {
+      "holdings_count": 122,
+      "nav_sum": 96.2,
+      "nav_sum_ok": true,
+      "yield_coverage": 99.18032786885246,
+      "rating_coverage": 100.0
+    },
+    "NIPPON": {
+      "holdings_count": 48,
+      "nav_sum": 94.66000000000001,
+      "nav_sum_ok": true,
+      "yield_coverage": 93.75,
+      "rating_coverage": 91.66666666666666
+    },
+    "SBI": {
+      "holdings_count": 101,
+      "nav_sum": 95.12999999999998,
+      "nav_sum_ok": true,
+      "yield_coverage": 100.0,
+      "rating_coverage": 99.00990099009901
+    }
+  },
+  "data_files_created": [
+    "holdings_enriched.csv",
+    "amc_summary.csv",
+    "issuer_analysis.csv",
+    "rating_distribution.csv",
+    "yield_buckets.csv",
+    "top_holdings_overall.csv",
+    "top_holdings_by_fund.csv",
+    "concentration_metrics.csv"
+  ]
+}

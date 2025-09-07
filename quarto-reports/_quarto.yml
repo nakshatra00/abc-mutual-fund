@@ -1,0 +1,43 @@
+project:
+  type: default
+  output-dir: "../output/reports"
+
+format:
+  pdf:
+    documentclass: article
+    geometry:
+      - top=1in
+      - bottom=1in
+      - left=1in
+      - right=1in
+    fontsize: 11pt
+    linestretch: 1.15
+    fig-width: 7
+    fig-height: 5
+    tbl-cap-location: top
+    lot: false
+    lof: false
+    keep-tex: false
+    pdf-engine: xelatex
+
+execute:
+  echo: false
+  warning: false
+  message: false
+  cache: false
+
+knitr:
+  opts_chunk:
+    fig.align: center
+    out.width: "100%"
+
+params:
+  report_date: "2025-07-31"
+  fund_filter: null
+  data_path: "../data/processed"
+  
+crossref:
+  fig-title: "Figure"
+  tbl-title: "Table"
+  
+number-sections: true

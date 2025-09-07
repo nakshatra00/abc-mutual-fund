@@ -1,0 +1,161 @@
+/* Corporate Bond Fund Analysis - Custom Styles */
+
+/* Color Palette */
+:root {
+  --color-sovereign: #1f4e79;    /* Deep blue for SOVEREIGN */
+  --color-aaa: #2f5f8f;          /* Blue for AAA */
+  --color-aa: #3f6f9f;           /* Lighter blue for AA */
+  --color-a: #4f7f4f;            /* Green for A */
+  --color-bbb: #df8f2f;          /* Orange for BBB */
+  --color-other: #8f8f8f;        /* Gray for others */
+  
+  --color-primary: #1f4e79;
+  --color-secondary: #2f7d7d;
+  --color-accent: #df8f2f;
+  --color-success: #4f7d4f;
+  --color-warning: #dfaf2f;
+  --color-danger: #df4f2f;
+  
+  --color-background: #ffffff;
+  --color-surface: #f8f9fa;
+  --color-text: #212529;
+  --color-text-light: #6c757d;
+}
+
+/* Typography */
+.title {
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  color: var(--color-text-light);
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+/* KPI Cards */
+.kpi-card {
+  background: var(--color-surface);
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 0.5rem;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.kpi-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  display: block;
+}
+
+.kpi-label {
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 0.5rem;
+}
+
+/* Tables */
+.table-professional {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+
+.table-professional th {
+  background-color: var(--color-primary);
+  color: white;
+  padding: 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid var(--color-primary);
+}
+
+.table-professional td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.table-professional tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.table-professional tbody tr:hover {
+  background-color: #e9ecef;
+}
+
+/* Rating Colors */
+.rating-sovereign { background-color: var(--color-sovereign); color: white; }
+.rating-aaa { background-color: var(--color-aaa); color: white; }
+.rating-aa { background-color: var(--color-aa); color: white; }
+.rating-a { background-color: var(--color-a); color: white; }
+.rating-bbb { background-color: var(--color-bbb); color: white; }
+.rating-other { background-color: var(--color-other); color: white; }
+
+/* Numeric formatting */
+.number-large {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 600;
+}
+
+.currency {
+  color: var(--color-success);
+}
+
+.percentage {
+  color: var(--color-primary);
+}
+
+/* Chart styling */
+.chart-container {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: var(--color-background);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Executive Summary */
+.executive-summary {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-left: 4px solid var(--color-primary);
+  padding: 1.5rem;
+  margin: 1rem 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.insight-bullet {
+  margin: 0.5rem 0;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.insight-bullet::before {
+  content: "▶";
+  color: var(--color-primary);
+  position: absolute;
+  left: 0;
+}
+
+/* Data quality indicators */
+.coverage-excellent { color: var(--color-success); font-weight: 600; }
+.coverage-good { color: var(--color-warning); font-weight: 600; }
+.coverage-poor { color: var(--color-danger); font-weight: 600; }
+
+/* Footer styling */
+.report-footer {
+  font-size: 0.8rem;
+  color: var(--color-text-light);
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #dee2e6;
+}
