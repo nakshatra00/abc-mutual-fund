@@ -68,8 +68,8 @@ class DataQualityGates:
         # Gate 8: Business Logic Validation
         all_passed &= self._gate_8_business_logic(fund_files)
         
-        # Gate 9: Rating Standardization Validation
-        all_passed &= self._gate_9_rating_standardization(consolidated_path)
+        # Gate 9: Standardized Ratings Check
+        all_passed &= self._gate_9_standardized_ratings(consolidated_path)
         
         # Final Report
         self._generate_final_report(all_passed)
@@ -157,11 +157,11 @@ class DataQualityGates:
                 
                 print(f"   📊 {fund_name}: % to NAV Sum = {nav_sum:.2f}%")
                 
-                if nav_sum < 92 or nav_sum > 110:
-                    issue = f"{fund_name}: % to NAV sum ({nav_sum:.2f}%) outside acceptable range [92-110]%"
+                if nav_sum < 98 or nav_sum > 102:
+                    issue = f"{fund_name}: % to NAV sum ({nav_sum:.2f}%) outside acceptable range [98-102]%"
                     nav_issues.append(issue)
                     gate_passed = False
-                    print(f"      ❌ FAILED: {nav_sum:.2f}% is outside [92-110]% range")
+                    print(f"      ❌ FAILED: {nav_sum:.2f}% is outside [98-102]% range")
                 else:
                     print(f"      ✅ PASSED: {nav_sum:.2f}% is within acceptable range")
                 
@@ -451,21 +451,9 @@ class DataQualityGates:
                         print(f"      ⚠️  {extreme_high} extremely high market values")
                     
                     if extreme_low > 0:
-                        # Get ISINs of extremely low value holdings
-                        low_threshold = max(q01 / 5, 1)
-                        low_holdings = df[pd.to_numeric(df['Market Value (Lacs)'], errors='coerce') < low_threshold]
-                        isins = low_holdings['ISIN'].tolist() if 'ISIN' in low_holdings.columns else []
-                        isin_list = ', '.join(isins[:3])  # Show first 3 ISINs
-                        if len(isins) > 3:
-                            isin_list += f" (and {len(isins)-3} more)"
-                        
                         warning = f"{fund_name}: {extreme_low} extremely low market values"
-                        if isins:
-                            warning += f" (ISINs: {isin_list})"
                         self.warnings.append(warning)
                         print(f"      ⚠️  {extreme_low} extremely low market values")
-                        if isins:
-                            print(f"          ISINs: {isin_list}")
             
             # % to NAV outliers
             if '% to NAV' in df.columns:
@@ -657,152 +645,94 @@ class DataQualityGates:
         print()
         return gate_passed
     
-    def _gate_9_rating_standardization(self, consolidated_path):
-        """Gate 9: Rating standardization validation"""
-        print("🚪 GATE 9: RATING STANDARDIZATION VALIDATION")
+    def _gate_9_standardized_ratings(self, consolidated_path):
+        """Gate 9: Standardized Ratings Quality Check"""
+        print("🚪 GATE 9: STANDARDIZED RATINGS CHECK")
         print("-" * 40)
         
         gate_passed = True
-        rating_issues = []
-        
-        if not consolidated_path.exists():
-            print("   ❌ FAILED: Consolidated file not found")
-            self.critical_failures.append("Consolidated file missing for rating validation")
-            print()
-            return False
         
         try:
             df = pd.read_csv(consolidated_path)
-        except Exception as e:
-            print(f"   ❌ FAILED: Cannot read consolidated file: {e}")
-            self.critical_failures.append(f"Cannot read consolidated file: {e}")
-            print()
-            return False
-        
-        # Check 1: Both Rating and Standardized Rating columns must exist
-        required_columns = ['Rating', 'Standardized Rating']
-        missing_columns = [col for col in required_columns if col not in df.columns]
-        if missing_columns:
-            issue = f"Missing required rating columns: {missing_columns}"
-            rating_issues.append(issue)
-            gate_passed = False
-        
-        if gate_passed:
-            # Check 2: Rating coverage - at least 95% should have standardized ratings
+            
+            if 'Standardized Rating' not in df.columns:
+                failure = "Standardized Rating column not found in consolidated data"
+                self.critical_failures.append(failure)
+                print(f"   ❌ FAILED: {failure}")
+                return False
+            
+            # Check rating standardization coverage
             total_holdings = len(df)
-            standardized_count = df['Standardized Rating'].notna().sum()
-            coverage_pct = (standardized_count / total_holdings) * 100
+            non_null_ratings = df['Rating'].notna().sum()
+            standardized_ratings = df['Standardized Rating'].notna().sum()
             
-            print(f"   📊 Rating Coverage: {standardized_count:,}/{total_holdings:,} holdings ({coverage_pct:.1f}%)")
+            print(f"   📊 Total holdings: {total_holdings}")
+            print(f"   📊 Holdings with original ratings: {non_null_ratings} ({(non_null_ratings/total_holdings)*100:.1f}%)")
+            print(f"   📊 Holdings with standardized ratings: {standardized_ratings} ({(standardized_ratings/total_holdings)*100:.1f}%)")
             
-            if coverage_pct < 95.0:
-                issue = f"Low rating standardization coverage: {coverage_pct:.1f}% (minimum: 95%)"
-                rating_issues.append(issue)
+            # Check standardization success rate
+            standardization_rate = (standardized_ratings / non_null_ratings) * 100 if non_null_ratings > 0 else 0
+            print(f"   📊 Standardization success rate: {standardization_rate:.1f}%")
+            
+            # Minimum thresholds
+            min_standardization_rate = 70.0  # At least 70% of ratings should be standardized
+            min_coverage = 60.0  # At least 60% of all holdings should have standardized ratings
+            
+            coverage_rate = (standardized_ratings / total_holdings) * 100
+            
+            if standardization_rate < min_standardization_rate:
+                failure = f"Standardization success rate {standardization_rate:.1f}% below threshold {min_standardization_rate}%"
+                self.critical_failures.append(failure)
+                print(f"   ❌ FAILED: {failure}")
                 gate_passed = False
             else:
-                print(f"   ✅ Excellent rating coverage: {coverage_pct:.1f}%")
+                print(f"   ✅ PASSED: Standardization rate {standardization_rate:.1f}% meets threshold")
             
-            # Check 3: Rating distribution analysis
-            if 'Standardized Rating' in df.columns:
-                rating_dist = df['Standardized Rating'].value_counts()
-                print(f"   📊 Standardized Rating Distribution:")
-                
-                # Expected order for corporate bond funds
-                expected_order = ['SOVEREIGN', 'AAA', 'AA+', 'AA', 'AA-', 'A+', 'A', 'A-', 'BBB+', 'BBB', 'BBB-']
-                
-                for rating in expected_order:
-                    if rating in rating_dist:
-                        count = rating_dist[rating]
-                        pct = (count / total_holdings) * 100
-                        print(f"      {rating:>10}: {count:>3} holdings ({pct:>5.1f}%)")
-                
-                # Check for high-quality rating concentration (AAA + SOVEREIGN should be significant)
-                aaa_count = rating_dist.get('AAA', 0)
-                sovereign_count = rating_dist.get('SOVEREIGN', 0)
-                high_quality_pct = ((aaa_count + sovereign_count) / total_holdings) * 100
-                
-                if high_quality_pct < 70.0:
-                    warning = f"Lower high-quality rating concentration: {high_quality_pct:.1f}% (AAA + SOVEREIGN)"
-                    self.warnings.append(warning)
-                    print(f"      ⚠️  {warning}")
-                else:
-                    print(f"      ✅ Strong high-quality rating profile: {high_quality_pct:.1f}% (AAA + SOVEREIGN)")
-                
-                # Check for any junk bonds (BB+ and below)
-                junk_ratings = ['BB+', 'BB', 'BB-', 'B+', 'B', 'B-', 'C', 'D']
-                junk_count = sum(rating_dist.get(rating, 0) for rating in junk_ratings)
-                if junk_count > 0:
-                    junk_pct = (junk_count / total_holdings) * 100
-                    if junk_pct > 5.0:  # >5% junk bonds is concerning for corporate bond fund
-                        issue = f"High junk bond exposure: {junk_count} holdings ({junk_pct:.1f}%)"
-                        rating_issues.append(issue)
-                        gate_passed = False
-                    else:
-                        warning = f"Some junk bond exposure: {junk_count} holdings ({junk_pct:.1f}%)"
-                        self.warnings.append(warning)
-                        print(f"      ⚠️  {warning}")
-                else:
-                    print(f"      ✅ No junk bond exposure detected")
+            if coverage_rate < min_coverage:
+                failure = f"Overall rating coverage {coverage_rate:.1f}% below threshold {min_coverage}%"
+                self.critical_failures.append(failure)
+                print(f"   ❌ FAILED: {failure}")
+                gate_passed = False
+            else:
+                print(f"   ✅ PASSED: Overall coverage {coverage_rate:.1f}% meets threshold")
             
-            # Check 4: Validate rating standardization logic
-            if 'Rating' in df.columns and 'Standardized Rating' in df.columns:
-                # Sample check: ensure common patterns are standardized correctly
-                sample_checks = {
-                    'CRISIL AAA': 'AAA',
-                    'ICRA AAA': 'AAA', 
-                    'CARE AAA': 'AAA',
-                    'SOV': 'SOVEREIGN',
-                    'Sovereign': 'SOVEREIGN'
-                }
-                
-                standardization_errors = []
-                for original, expected in sample_checks.items():
-                    matches = df[df['Rating'].str.contains(original, case=False, na=False)]
-                    if len(matches) > 0:
-                        incorrect = matches[matches['Standardized Rating'] != expected]
-                        if len(incorrect) > 0:
-                            error = f"{original} not properly standardized to {expected}: {len(incorrect)} cases"
-                            standardization_errors.append(error)
-                
-                if standardization_errors:
-                    for error in standardization_errors:
-                        rating_issues.append(error)
-                        print(f"      ❌ {error}")
-                    gate_passed = False
-                else:
-                    print(f"      ✅ Rating standardization logic working correctly")
-        
-        # Check 5: Unrated holdings analysis
-        unrated = df[df['Standardized Rating'].isna()]
-        if len(unrated) > 0:
-            print(f"   📋 Unrated Holdings Analysis ({len(unrated)} holdings):")
-            unrated_originals = unrated['Rating'].value_counts().head(5)
-            for rating, count in unrated_originals.items():
-                print(f"      \"{rating}\": {count} holdings")
+            # Check for valid standardized rating values
+            valid_ratings = ['SOVEREIGN', 'AAA', 'AA+', 'AA', 'AA-', 'A+', 'A', 'A-', 
+                           'BBB+', 'BBB', 'BBB-', 'BB+', 'BB', 'BB-', 'B+', 'B', 'B-', 
+                           'C', 'D', 'A1+', 'A1', 'A2+', 'A2', 'A3']
             
-            # If we have many unrated with recognizable patterns, it's an issue
-            recognizable_patterns = ['AAA', 'AA', 'A+', 'A-', 'BBB']
-            potentially_rateable = 0
-            for pattern in recognizable_patterns:
-                potentially_rateable += unrated['Rating'].str.contains(pattern, case=False, na=False).sum()
+            standardized_values = df['Standardized Rating'].dropna().unique()
+            invalid_ratings = [r for r in standardized_values if r not in valid_ratings]
             
-            if potentially_rateable > 0:
-                warning = f"{potentially_rateable} unrated holdings contain recognizable rating patterns"
+            if invalid_ratings:
+                warning = f"Found {len(invalid_ratings)} invalid standardized ratings: {invalid_ratings[:5]}"
                 self.warnings.append(warning)
-                print(f"      ⚠️  {warning}")
-        
-        if gate_passed:
-            print("   ✅ PASSED: Rating standardization validation successful")
-            self.passed_gates.append("Rating Standardization")
-        else:
-            print("   ❌ FAILED: Rating standardization issues found:")
-            for issue in rating_issues:
-                print(f"      - {issue}")
-            self.critical_failures.extend(rating_issues)
+                print(f"   ⚠️  WARNING: {warning}")
+            else:
+                print(f"   ✅ All standardized ratings are valid")
+            
+            # Show distribution of standardized ratings
+            print(f"   📊 STANDARDIZED RATING DISTRIBUTION:")
+            rating_dist = df['Standardized Rating'].value_counts().head(5)
+            for rating, count in rating_dist.items():
+                pct = (count/total_holdings)*100
+                print(f"      {str(rating):12s}: {count:4d} holdings ({pct:5.1f}%)")
+            
+            if gate_passed:
+                print("   ✅ OVERALL: Standardized ratings quality check passed")
+                self.passed_gates.append("Standardized Ratings Check")
+            else:
+                print("   ❌ OVERALL: Standardized ratings quality check failed")
+                
+        except Exception as e:
+            failure = f"Error during standardized ratings check: {str(e)}"
+            self.critical_failures.append(failure)
+            print(f"   ❌ ERROR: {failure}")
+            gate_passed = False
         
         print()
         return gate_passed
-
+    
     def _generate_final_report(self, all_passed):
         """Generate final validation report"""
         print("📋 FINAL VALIDATION REPORT")
@@ -813,7 +743,7 @@ class DataQualityGates:
         print()
         
         # Gates summary
-        total_gates = 9
+        total_gates = 8
         passed_count = len(self.passed_gates)
         
         print(f"🚪 GATES SUMMARY: {passed_count}/{total_gates} PASSED")

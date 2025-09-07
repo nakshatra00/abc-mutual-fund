@@ -1,4 +1,8 @@
-sovereign_tokens: ["g-sec","gs","goi","government stock","sdl","t-bill","tbill","state dev loan","govt of"]
+sovereign_tokens: ["g-sec","gs","goi","government stock","sdl","t-bill","tbill","state dev loan","govt of","sov","sovereign"]
+
+# Invalid patterns that should not be treated as ratings
+invalid_patterns: ["financial services", "alternative investment", "cdmdf", "mutual fund", "equity", "debt fund"]
+
 map:
   aaa: "AAA"
   aa+: "AA+"

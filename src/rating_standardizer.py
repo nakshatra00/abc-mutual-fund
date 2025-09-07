@@ -33,31 +33,44 @@ def extract_rating_from_text(rating_text, config):
     
     rating_text = str(rating_text).strip()
     
-    # Handle special cases first
-    if rating_text.upper() == 'SOV':
-        return "SOVEREIGN"
-    
     # Check for sovereign indicators first
     rating_lower = rating_text.lower()
     for token in config['sovereign_tokens']:
         if token in rating_lower:
             return "SOVEREIGN"
     
-    # Remove common agency prefixes and clean formatting
-    agencies = ['crisil', 'icra', 'care', 'ind-ra', 'brickwork', 'acuite', 'fitch', 'ind', 'bwr']
+    # Check for invalid/non-rating patterns first
+    invalid_patterns = [
+        r'^\d+\.\d+',  # Numeric patterns like "0.06271996470050001"
+    ]
+    
+    # Add invalid patterns from config if available
+    if 'invalid_patterns' in config:
+        for pattern in config['invalid_patterns']:
+            invalid_patterns.append(pattern.lower().replace(' ', r'\s+'))
+    
+    for pattern in invalid_patterns:
+        if re.search(pattern, rating_lower):
+            return None
+    
+    # Remove common agency prefixes (including FITCH, BWR, IND)
+    agencies = ['crisil', 'icra', 'care', 'ind-ra', 'ind', 'brickwork', 'bwr', 'acuite', 'fitch']
     cleaned_rating = rating_text.lower()
     
-    # Remove brackets like [ICRA]
-    cleaned_rating = re.sub(r'[\[\]]', '', cleaned_rating)
-    
-    # Remove agency names with optional separators (space, hyphen, etc.)
+    # Remove agency prefixes and common separators
     for agency in agencies:
-        # Match agency name followed by optional separators and whitespace
-        pattern = f'^{agency}[\\s\\-]*'
-        cleaned_rating = re.sub(pattern, '', cleaned_rating)
+        patterns = [
+            f'^{agency}\\s*-\\s*',   # "CRISIL - AAA"
+            f'^{agency}\\s+',        # "CRISIL AAA"
+            f'^\\[{agency}\\]',      # "[ICRA]AAA"
+        ]
+        for pattern in patterns:
+            cleaned_rating = re.sub(pattern, '', cleaned_rating)
     
-    # Remove common suffixes like (CE), (SO), etc.
-    cleaned_rating = re.sub(r'\([^)]*\)', '', cleaned_rating).strip()
+    # Remove common suffixes like (CE), (SO), /Stable, etc.
+    cleaned_rating = re.sub(r'\s*\([^)]*\)\s*$', '', cleaned_rating)
+    cleaned_rating = re.sub(r'\s*/.*$', '', cleaned_rating)
+    cleaned_rating = cleaned_rating.strip()
     
     # Try to match against rating map
     for key, standard_rating in config['map'].items():

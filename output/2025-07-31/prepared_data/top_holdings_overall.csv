@@ -1,0 +1,21 @@
+Fund Name,AMC,ISIN,Instrument Name,Market Value (Lacs),% to NAV,Yield,Rating,Quantity,Maturity Date,Standardized Rating,Issuer,Instrument_Type,Maturity_Bucket,Yield_Bucket,Rank
+ABSLF Corporate Bond Fund,ABSLF,IN0020240134,Government of India (18/11/2039),272101.07,9.51506655062674,6.809824000000001,Sovereign,266736200.0,2039-11-18,SOVEREIGN,Government of India,Government Bond,10+ Years,6-7%,1
+HDFC Corporate Bond Fund,HDFC,IN0020240134,6.92% GOI MAT 181139,239726.56,6.66,6.8098,Sovereign,235000000.0,2039-11-18,SOVEREIGN,Government of India,Government Bond,10+ Years,6-7%,2
+SBI Corporate Bond Fund,SBI,IN0020240126,6.79% CGL 2034,236007.26,9.34,6.5233753,Sovereign,230200000.0,,SOVEREIGN,CGL 2034,Corporate Bond,No Maturity Info,6-7%,3
+ABSLF Corporate Bond Fund,ABSLF,IN0020240126,Government of India (07/10/2034),208121.08,7.27775885374148,6.523375,Sovereign,203000000.0,2034-10-07,SOVEREIGN,Government of India,Government Bond,5-10 Years,6-7%,4
+ICICI Corporate Bond Fund,ICICI,IN0020200120,Government Securities,192762.57,5.82204263796,7.28,SOV,185277360.0,,SOVEREIGN,Government of India,Government Bond,No Maturity Info,7-8%,5
+KOTAK Corporate Bond Fund,KOTAK,IN0020230085,Central Government - 2033(^),154759.18,8.690000000000001,6.54,SOV,147935080.0,,SOVEREIGN,Government of India,Government Bond,No Maturity Info,6-7%,6
+ABSLF Corporate Bond Fund,ABSLF,INE261F08EO7,7.48% National Bank For Agriculture and Rural Development (15/09/2028) **,131265.83,4.59021777609958,6.694999999999999,CRISIL AAA,128500.0,2028-09-15,AAA,National Bank For,Bank Bond,3-5 Years,6-7%,7
+ICICI Corporate Bond Fund,ICICI,IN0020240019,Government Securities,123981.83,3.74464555329,6.52,SOV,118594780.0,,SOVEREIGN,Government of India,Government Bond,No Maturity Info,6-7%,8
+HDFC Corporate Bond Fund,HDFC,INE296A07TH8,Bajaj Finance Ltd.,113265.45,3.15,7.44,CRISIL - AAA,112500.0,,AAA,Bajaj Finance Ltd.,NBFC Bond,No Maturity Info,7-8%,9
+ICICI Corporate Bond Fund,ICICI,INE261F08DX0,NABARD **,111323.72,3.36233037594,6.6,CRISIL AAA,110250.0,,AAA,NABARD,Corporate Bond,No Maturity Info,6-7%,10
+ICICI Corporate Bond Fund,ICICI,INE115A07RF8,LIC Housing Finance Ltd. **,110060.77,3.32418526951,7.36,CRISIL AAA,108500.0,,AAA,LIC Housing Finance,NBFC Bond,No Maturity Info,7-8%,11
+ICICI Corporate Bond Fund,ICICI,INE261F08EM1,NABARD **,97353.41,2.94038258553,6.73,ICRA AAA,95550.0,,AAA,NABARD,Corporate Bond,No Maturity Info,6-7%,12
+SBI Corporate Bond Fund,SBI,INE002A07809,Reliance Industries Ltd.,93349.96,3.7,6.96,CRISIL AAA,89000.0,,AAA,Reliance Industries Ltd.,Corporate Bond,No Maturity Info,6-7%,13
+HDFC Corporate Bond Fund,HDFC,IN0020200120,Floating Rate GOI 2033,92515.5,2.57,7.35,Sovereign,89000000.0,,SOVEREIGN,Government of India,Government Bond,No Maturity Info,7-8%,14
+ABSLF Corporate Bond Fund,ABSLF,IN0020240019,Government of India (08/04/2034),84590.94,2.9580496591903103,6.559081999999999,Sovereign,81161700.0,2034-04-08,SOVEREIGN,Government of India,Government Bond,5-10 Years,6-7%,15
+ICICI Corporate Bond Fund,ICICI,INE01XX07034,Pipeline Infrastructure Pvt Ltd. **,83390.51,2.51865860068,7.01,CRISIL AAA,80500.0,,AAA,Pipeline Infrastructure Pvt,Corporate Bond,No Maturity Info,7-8%,16
+SBI Corporate Bond Fund,SBI,IN0020240118,7.09% CGL 2054,83118.42,3.29,7.1525086,Sovereign,82500000.0,,SOVEREIGN,CGL 2054,Corporate Bond,No Maturity Info,7-8%,17
+SBI Corporate Bond Fund,SBI,INE062A08256,State Bank of India( Tier II Bond under Basel III ),82459.49,3.26,6.2462,CRISIL AAA,8250.0,,AAA,State Bank of,Bank Bond,No Maturity Info,6-7%,18
+HDFC Corporate Bond Fund,HDFC,INE062A08454,State Bank of India (Tier 2 - Basel III)^,80500.08,2.24,7.255,CRISIL - AAA,800.0,,AAA,State Bank of,Bank Bond,No Maturity Info,7-8%,19
+SBI Corporate Bond Fund,SBI,INE261F08EJ7,National Bank for Agriculture and Rural Development,79408.64,3.14,6.77,[ICRA]AAA,77000.0,,AAA,National Bank for,Bank Bond,No Maturity Info,6-7%,20

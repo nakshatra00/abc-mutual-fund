@@ -21,7 +21,7 @@ def extract_nippon_data():
     
     # File configuration
     file_path = Path("data/raw/2025-07-31/NIMF-MONTHLY-PORTFOLIO-31-July-25.xls")
-    sheet_name = "SD"
+    sheet_name = "IP"
     header_row = 3  # 0-indexed, so row 4 in Excel
     
     print(f"📁 File: {file_path.name}")
@@ -68,6 +68,30 @@ def extract_nippon_data():
     value_col = value_cols[0]
     print(f"💰 Using value column: '{value_col}'")
     
+    # Additional filtering for data quality
+    print(f"🔍 Applying additional data quality filters...")
+    
+    # Filter out rows with NaN market values
+    before_nan_filter = len(data_df)
+    data_df = data_df[pd.notna(data_df[value_col])].reset_index(drop=True)
+    print(f"   ✅ Removed {before_nan_filter - len(data_df)} rows with NaN market values")
+    
+    # Filter out rows with corrupt rating values (numeric ratings instead of text)
+    before_rating_filter = len(data_df)
+    rating_col = 'Industry / Rating'
+    if rating_col in data_df.columns:
+        # Remove rows where rating is purely numeric (likely corrupt)
+        rating_mask = data_df[rating_col].apply(lambda x: not (isinstance(x, (int, float)) and not pd.isna(x)))
+        data_df = data_df[rating_mask].reset_index(drop=True)
+        print(f"   ✅ Removed {before_rating_filter - len(data_df)} rows with corrupt rating values")
+    
+    # Remove exact duplicate ISINs (keep first occurrence)
+    before_dup_filter = len(data_df)
+    data_df = data_df.drop_duplicates(subset=['ISIN'], keep='first').reset_index(drop=True)
+    print(f"   ✅ Removed {before_dup_filter - len(data_df)} duplicate ISIN entries")
+    
+    print(f"🎯 Final valid holdings: {len(data_df)}")
+    
     # Check if values are in Lacs or need conversion
     sample_values = pd.to_numeric(data_df[value_col], errors='coerce').dropna().head(5)
     print(f"💰 Sample values: {list(sample_values)}")
@@ -88,6 +112,22 @@ def extract_nippon_data():
         print(f"❌ Column '{nav_col}' not found!")
         nav_values = None
 
+    # Check % Yield column and convert from decimal to percentage
+    yield_col = 'YIELD'
+    if yield_col in data_df.columns:
+        sample_yield = pd.to_numeric(data_df[yield_col], errors='coerce').dropna().head(3)
+        print(f"📊 Sample Yield values: {list(sample_yield)}")
+        
+        # Values are in decimal format (0.063 = 6.3%) - convert to percentage
+        if len(sample_yield) > 0 and sample_yield.max() <= 1:
+            print("📊 Converting yield decimal format to percentage (multiplying by 100)")
+            yield_values = pd.to_numeric(data_df[yield_col], errors='coerce') * 100
+        else:
+            yield_values = pd.to_numeric(data_df[yield_col], errors='coerce')
+    else:
+        print(f"❌ Column '{yield_col}' not found!")
+        yield_values = None
+
     # Standardize columns
     standardized = pd.DataFrame({
         'Fund Name': 'Nippon India Corporate Bond Fund',
@@ -96,7 +136,7 @@ def extract_nippon_data():
         'Instrument Name': data_df.get('Name of the Instrument', ''),
         'Market Value (Lacs)': pd.to_numeric(data_df[value_col], errors='coerce'),
         '% to NAV': nav_values,
-        'Yield': pd.to_numeric(data_df.get('YIELD', ''), errors='coerce') * 100,  # Convert decimal to percentage
+        'Yield': yield_values,
         'Rating': data_df.get('Industry / Rating', ''),
         'Quantity': pd.to_numeric(data_df.get('Quantity', ''), errors='coerce')
     })
