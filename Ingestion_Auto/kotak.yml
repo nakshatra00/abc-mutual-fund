@@ -1,0 +1,62 @@
+# KOTAK MAHINDRA ASSET MANAGEMENT EXTRACTIO  # Kotak has clean percentage formatting
+  yield_conversion: "none"
+  nav_conversion: "none"GURATION
+# ========================================================
+
+amc_name: "KOTAK"
+full_name: "Kotak Mahindra Asset Management"
+
+# File pattern matching for different fund types
+file_patterns:
+  corporate-bond: "*Kotak*Consolidated*SEBI*Portfolio*"
+  money-market: "*Kotak*Money*Market*"
+  
+# Fund type specific configurations
+fund_types:
+  corporate-bond:
+    sheet_name: "KCB"  # Kotak Corporate Bond
+    header_row: 2  # Excel row number (1-based)
+    data_start_row: 6  # Data actually starts at row 6
+    fund_name: "Kotak Corporate Bond Fund"
+    file_format: ".xls"
+    
+  money-market:
+    sheet_name: "KMM"  # Kotak Money Market (update when available)
+    header_row: 2
+    data_start_row: 6
+    fund_name: "Kotak Money Market Fund"
+    file_format: ".xls"
+
+# Column mappings - Kotak uses positional mapping (no headers)
+column_mappings:
+  # Kotak uses column positions instead of named columns
+  instrument_name_col: 2  # Column C (0-indexed: 2)
+  isin_col: 3            # Column D (0-indexed: 3)
+  rating_col: 4          # Column E (0-indexed: 4)
+  yield_col: 5           # Column F (0-indexed: 5)
+  quantity_col: 6        # Column G (0-indexed: 6)
+  market_value_col: 7    # Column H (0-indexed: 7)
+  nav_percentage_col: 8  # Column I (0-indexed: 8)
+
+# Data processing rules
+processing:
+  # Use positional column mapping instead of named columns
+  use_positional_mapping: true
+  
+  # Kotak typically has clean percentage formatting
+  yield_conversion: "none"
+  nav_conversion: "none"
+  
+  # Kotak does not include maturity dates in instrument names
+  maturity_extraction:
+    enabled: false
+
+# Validation rules
+validation:
+  required_column_positions: [2, 3, 7]  # Instrument Name, ISIN, Market Value positions
+  isin_format: "12_char_alpha_prefix"
+
+# Special handling for .xls files
+file_handling:
+  excel_engine: "xlrd"  # Required for .xls files
+  fallback_engine: "openpyxl"

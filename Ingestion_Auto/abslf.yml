@@ -1,0 +1,47 @@
+# ADITYA BIRLA SUN LIFE (ABSLF) EXTRACTION CONFIGURATION
+# =====================================================
+
+amc_name: "ABSLF"
+full_name: "Aditya Birla Sun Life"
+
+# File pattern matching for different fund types
+file_patterns:
+  corporate-bond: "*ABSLF*SEBI*Portfolio*"
+  money-market: "*ABSLF*Money*Market*"
+  
+# Fund type specific configurations
+fund_types:
+  corporate-bond:
+    sheet_name: "BSLIF"
+    header_row: 4  # Excel row number (1-based)
+    fund_name: "Aditya Birla Sun Life Corporate Bond Fund"
+    file_format: ".xlsm"
+    
+  money-market:
+    sheet_name: "Money Market"  # Update when you have money market files
+    header_row: 4
+    fund_name: "Aditya Birla Sun Life Money Market Fund"
+    file_format: ".xlsm"
+
+# Column mappings - maps standard fields to ABSLF-specific column names
+column_mappings:
+  isin: "ISIN"
+  instrument_name: "Name of the Instrument"
+  market_value: "Market Value (Rs. In Lacs)"
+  nav_percentage: "% to Net Assets"
+  yield: "Yield"
+  rating: "Rating"
+  quantity: "Quantity"
+
+# Data processing rules
+processing:
+  # Convert yield from decimal to percentage (0.065 -> 6.5)
+  yield_conversion: "decimal_to_percentage"
+  
+  # Convert NAV percentage from decimal to percentage (0.045 -> 4.5)
+  nav_conversion: "decimal_to_percentage"
+
+# Validation rules
+validation:
+  required_columns: ["ISIN", "Name of the Instrument", "Market Value (Rs. In Lacs)"]
+  isin_format: "12_char_alpha_prefix"

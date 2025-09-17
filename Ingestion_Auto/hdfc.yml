@@ -1,0 +1,45 @@
+# HDFC ASSET MANAGEMENT EXTRACTION CONFIGURATION
+# ==============================================
+
+amc_name: "HDFC"
+full_name: "HDFC Asset Management"
+
+# File pattern matching for different fund types
+file_patterns:
+  corporate-bond: "*HDFC*Corporate*Bond*"
+  money-market: "*HDFC*Money*Market*"
+  
+# Fund type specific configurations
+fund_types:
+  corporate-bond:
+    sheet_name: "HDFCMO"
+    header_row: 5  # Excel row number (1-based)
+    fund_name: "HDFC Corporate Bond Fund"
+    file_format: ".xlsx"
+    
+  money-market:
+    sheet_name: "Money Market"  # Update when you have money market files
+    header_row: 5
+    fund_name: "HDFC Money Market Fund"
+    file_format: ".xlsx"
+
+# Column mappings - maps standard fields to HDFC-specific column names
+column_mappings:
+  isin: "ISIN"
+  instrument_name: "Name of the Instrument"
+  market_value: "Market Value (Rs. In Lacs)"
+  nav_percentage: "% to Net Assets"
+  yield: "Yield"
+  rating: "Rating"
+  quantity: "Quantity"
+
+# Data processing rules
+processing:
+  # HDFC typically has percentage values already formatted correctly
+  yield_conversion: "none"
+  nav_conversion: "none"
+
+# Validation rules
+validation:
+  required_columns: ["ISIN", "Name of the Instrument", "Market Value (Rs. In Lacs)"]
+  isin_format: "12_char_alpha_prefix"

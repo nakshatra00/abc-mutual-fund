@@ -1,0 +1,45 @@
+# ICICI PRUDENTIAL ASSET MANAGEMENT EXTRACTION CONFIGURATION
+# ==========================================================
+
+amc_name: "ICICI"
+full_name: "ICICI Prudential Asset Management"
+
+# File pattern matching for different fund types
+file_patterns:
+  corporate-bond: "*ICICI*Prudential*Corporate*Bond*"
+  money-market: "*ICICI*Money*Market*"
+  
+# Fund type specific configurations
+fund_types:
+  corporate-bond:
+    sheet_name: "CORPORATE BOND"
+    header_row: 4  # Excel row number (1-based)
+    fund_name: "ICICI Prudential Corporate Bond Fund"
+    file_format: ".xlsx"
+    
+  money-market:
+    sheet_name: "Money Market"  # Update when you have money market files
+    header_row: 4
+    fund_name: "ICICI Prudential Money Market Fund"
+    file_format: ".xlsx"
+
+# Column mappings - maps standard fields to ICICI-specific column names
+column_mappings:
+  isin: "ISIN"
+  instrument_name: "Name of the Instrument"
+  market_value: "Market Value/Exposure (Rs. In Lacs)"  # ICICI uses "Exposure" terminology
+  nav_percentage: "% to Nav"
+  yield: "Yield"
+  rating: "Rating"
+  quantity: "Quantity"
+
+# Data processing rules
+processing:
+  # ICICI typically has clean percentage formatting
+  yield_conversion: "none"
+  nav_conversion: "none"
+
+# Validation rules
+validation:
+  required_columns: ["ISIN", "Name of the Instrument", "Market Value/Exposure (Rs. In Lacs)"]
+  isin_format: "12_char_alpha_prefix"

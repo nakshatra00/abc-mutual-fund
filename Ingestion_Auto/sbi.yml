@@ -1,0 +1,45 @@
+# SBI MUTUAL FUND EXTRACTION CONFIGURATION
+# =========================================
+
+amc_name: "SBI"
+full_name: "SBI Mutual Fund"
+
+# File pattern matching for different fund types
+file_patterns:
+  corporate-bond: "*SBI*All-Schemes*Monthly*Portfolio*"
+  money-market: "*SBI*Money*Market*"
+  
+# Fund type specific configurations
+fund_types:
+  corporate-bond:
+    sheet_name: "SCBF"  # SBI Corporate Bond Fund
+    header_row: 6  # Excel row number (1-based)
+    fund_name: "SBI Corporate Bond Fund"
+    file_format: ".xlsx"
+    
+  money-market:
+    sheet_name: "Money Market"  # Update when you have money market files
+    header_row: 6
+    fund_name: "SBI Money Market Fund"
+    file_format: ".xlsx"
+
+# Column mappings - maps standard fields to SBI-specific column names
+column_mappings:
+  isin: "ISIN"
+  instrument_name: "Name of the Instrument"
+  market_value: "Market Value (Rs. In Lacs)"
+  nav_percentage: "% to Net Assets"
+  yield: "Yield"
+  rating: "Rating"
+  quantity: "Quantity"
+
+# Data processing rules
+processing:
+  # SBI typically has clean percentage formatting
+  yield_conversion: "none"
+  nav_conversion: "none"
+
+# Validation rules
+validation:
+  required_columns: ["ISIN", "Name of the Instrument", "Market Value (Rs. In Lacs)"]
+  isin_format: "12_char_alpha_prefix"
