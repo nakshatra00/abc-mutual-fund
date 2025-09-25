@@ -1,2 +1,49 @@
-# HDFC Asset Management Configuration
-# Add configuration here
+amc_name: "HDFC"
+base_url: "https://files.hdfcfund.com"
+
+# Manual file list - add specific URLs for each fund you want to download
+manual_files:
+  fortnightly:
+    # Ultra Short Term Fund - September 15, 2025
+    - url: "https://files.hdfcfund.com/s3fs-public/2025-09/HDFC%20Ultra%20Short%20Term%20Fund%20-%2015-September-2025.xlsx"
+      fund_type: "money-market"
+      date: "2025-09-15"
+    
+    # Corporate Bond Fund - September 15, 2025  
+    - url: "https://files.hdfcfund.com/s3fs-public/2025-09/HDFC%20Corporate%20Bond%20Fund%20-%2015-September-2025.xlsx"
+      fund_type: "corporate-bond"
+      date: "2025-09-15"
+  
+  monthly:
+    # Add monthly files here (August 31st examples):
+    - url: "https://files.hdfcfund.com/s3fs-public/2025-08/HDFC%20Ultra%20Short%20Term%20Fund%20-%2031-August-2025.xlsx"
+      fund_type: "money-market"
+      date: "2025-08-31"
+    - url: "https://files.hdfcfund.com/s3fs-public/2025-08/HDFC%20Corporate%20Bond%20Fund%20-%2031-August-2025.xlsx"
+      fund_type: "corporate-bond"
+      date: "2025-08-31"
+    #   date: "2025-08-31"
+
+# Fund type patterns for organizing downloaded files
+fund_type_patterns:
+  corporate-bond:
+    - "corporate.*bond"
+    - "credit.*risk"
+    - "banking.*psu"
+  
+  money-market:
+    - "ultra.*short"
+    - "liquid"
+    - "money.*market"
+    - "overnight"
+  
+  gilt:
+    - "gilt"
+    - "government"
+    
+  equity:
+    - "equity"
+    - "large.*cap"
+    - "mid.*cap"
+    - "small.*cap"
+    - "focused"

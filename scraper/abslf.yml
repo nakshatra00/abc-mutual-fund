@@ -1,2 +1,36 @@
-# ABSLF (Aditya Birla Sun Life) Configuration
-# Add configuration here
+amc_name: "ABSLF"
+base_url: "https://mutualfund.adityabirlacapital.com/-/media/bsl/files/resources"
+
+# URL patterns for direct downloads
+url_patterns:
+  monthly: "{base_url}/monthly-portfolio/{year}/sebi_monthly_portfolio-{date}.zip"
+  fortnightly: "{base_url}/fortnightly-portfolio/{year}/sebi_fortnightly_portfolio_{date}.zip"
+
+# Target files to try (fallback if no date provided)
+target_files:
+  fortnightly:
+    - date: "15-sep-2025"
+      year: "2025"
+    - date: "31-aug-2025" 
+      year: "2025"
+  monthly:
+    - month: "august"
+      year: "2025"
+    - month: "july"
+      year: "2025"
+
+# Fund type patterns for file organization
+fund_type_patterns:
+  corporate-bond:
+    - "corporate.*bond"
+    - "credit.*risk"
+    - "banking.*psu"
+  
+  money-market:
+    - "liquid"
+    - "money.*market"
+    - "ultra.*short"
+  
+  gilt:
+    - "gilt"
+    - "government"
