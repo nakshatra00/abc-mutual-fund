@@ -13,7 +13,7 @@ file_patterns:
 fund_types:
   corporate-bond:
     sheet_name: "IP"  # Income Portfolio
-    header_row: 4  # Excel row number (1-based)
+    header_row: 3  # Excel row number (1-based)
     fund_name: "Nippon India Corporate Bond Fund"
     file_format: ".xls"
     
@@ -27,8 +27,8 @@ fund_types:
 column_mappings:
   isin: "ISIN"
   instrument_name: "Name of the Instrument"
-  market_value: "Market Value (Rs. In Lacs)"
-  nav_percentage: "% to Net Assets"
+  market_value: "Market/Fair Value\n( Rs. in Lacs)"
+  nav_percentage: "% to NAV"
   yield: "Yield"
   rating: "Rating"
   quantity: "Quantity"

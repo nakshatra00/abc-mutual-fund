@@ -1,0 +1,44 @@
+# KOTAK MAHINDRA SCRAPER CONFIGURATION
+# ===================================
+
+amc_name: "KOTAK"
+full_name: "Kotak Mahindra Asset Management Company Limited"
+website: "https://www.kotakmf.com"
+active: true
+
+disclosure_sources:
+  website:
+    enabled: true
+    base_url: "https://www.kotakmf.com/investor-corner/disclosures"
+
+fund_types:
+  corporate-bond:
+    source_type: "website"
+    file_patterns:
+      - "*Kotak*Corporate*Bond*"
+      - "*KOTAK*Corp*Bond*"
+    expected_formats: [".xlsx", ".xls"]
+    frequency: "monthly"
+    
+  money-market:
+    source_type: "website"
+    file_patterns:
+      - "*Kotak*Money*Market*"
+      - "*KOTAK*Liquid*"
+    expected_formats: [".xlsx", ".xls"]
+    frequency: "monthly"
+
+parsing_strategies:
+  excel:
+    sheet_detection: "auto"
+    header_detection: "auto"
+    fallback_sheet: 0
+    fallback_header_row: 5
+
+validation:
+  required_columns: ["isin", "instrument_name", "market_value"]
+  min_rows: 5
+
+rate_limiting:
+  requests_per_minute: 30
+  delay_between_requests: 2

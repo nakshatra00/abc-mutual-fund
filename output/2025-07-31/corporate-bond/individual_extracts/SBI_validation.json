@@ -1,0 +1,22 @@
+{
+  "portfolio_coverage": {
+    "passed": true,
+    "message": "97.2% coverage (min: 96.0%)",
+    "value": 97.21000000000001
+  },
+  "cash_component": {
+    "passed": false,
+    "message": "21.3% cash (expected: 1.0-15.0%)",
+    "value": 21.339999999999996
+  },
+  "isin_securities": {
+    "passed": true,
+    "message": "75.9% ISIN securities",
+    "value": 75.87
+  },
+  "unaccounted_exposure": {
+    "passed": false,
+    "message": "2.8% unaccounted (tolerance: \u00b11.5%)",
+    "value": 2.789999999999992
+  }
+}

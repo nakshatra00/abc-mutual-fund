@@ -26,9 +26,9 @@ fund_types:
 # Column mappings - maps standard fields to HDFC-specific column names
 column_mappings:
   isin: "ISIN"
-  instrument_name: "Name of the Instrument"
-  market_value: "Market Value (Rs. In Lacs)"
-  nav_percentage: "% to Net Assets"
+  instrument_name: "Name Of the Instrument"
+  market_value: "Market/ Fair Value (Rs. in Lacs.)"
+  nav_percentage: "% to NAV"
   yield: "Yield"
   rating: "Rating"
   quantity: "Quantity"

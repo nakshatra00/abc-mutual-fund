@@ -1,0 +1,120 @@
+# HDFC ASSET MANAGEMENT SCRAPER CONFIGURATION
+# ===========================================
+
+amc_name: "HDFC"
+full_name: "HDFC Asset Management Company Limited"
+website: "https://www.hdfcfund.com"
+active: true
+
+# Different source types for disclosures
+disclosure_sources:
+  website:
+    enabled: true
+    base_url: "https://www.hdfcfund.com/investor-services/reports-and-disclosures"
+    navigation_urls:
+      - "https://www.hdfcfund.com/investor-services/reports-and-disclosures/portfolio-disclosures"
+      - "https://www.hdfcfund.com/investor-services/reports-and-disclosures/monthly-portfolio"
+    
+  api:
+    enabled: false
+    base_url: ""
+    auth_required: false
+    
+  ftp:
+    enabled: false
+    host: ""
+    username: ""
+    password: ""
+
+# Fund type specific scraping configurations
+fund_types:
+  corporate-bond:
+    source_type: "website"
+    url_patterns:
+      - "/corporate-bond-funds"
+      - "/portfolio-disclosures"
+    file_patterns:
+      - "*HDFC*Corporate*Bond*Portfolio*"
+      - "*HDFC*Corp*Bond*"
+      - "*Corporate*Bond*Fund*HDFC*"
+    expected_formats: [".xlsx", ".xls"]
+    frequency: "monthly"
+    css_selectors:
+      - "a[href*='corporate']"
+      - "a[href*='bond']"
+      - ".disclosure-link"
+    
+  money-market:
+    source_type: "website" 
+    url_patterns:
+      - "/money-market-funds"
+      - "/liquid-funds"
+    file_patterns:
+      - "*HDFC*Money*Market*Portfolio*"
+      - "*HDFC*Liquid*Fund*"
+      - "*Money*Market*HDFC*"
+    expected_formats: [".xlsx", ".xls"]
+    frequency: "monthly"
+    css_selectors:
+      - "a[href*='money']"
+      - "a[href*='liquid']"
+      
+  equity:
+    source_type: "website"
+    url_patterns:
+      - "/equity-funds"
+      - "/diversified-equity"
+    file_patterns:
+      - "*HDFC*Equity*Portfolio*"
+      - "*HDFC*Diversified*"
+    expected_formats: [".xlsx", ".xls"]
+    frequency: "monthly"
+
+# Parsing strategies for different file types
+parsing_strategies:
+  excel:
+    sheet_detection: "auto"  # auto, specific_name, index
+    header_detection: "auto"  # auto, row_number
+    fallback_sheet: 0
+    fallback_header_row: 5
+    skip_rows: []
+    
+  pdf:
+    extraction_method: "tabula"  # tabula, pdfplumber, camelot
+    pages: "all"
+    table_detection: "auto"
+
+# Data validation rules specific to HDFC
+validation:
+  required_columns: ["isin", "instrument_name", "market_value"]
+  min_rows: 10
+  max_file_age_days: 45
+  date_formats:
+    - "%d-%m-%Y"
+    - "%Y-%m-%d"
+    - "%d/%m/%Y"
+
+# Rate limiting and politeness
+rate_limiting:
+  requests_per_minute: 30
+  delay_between_requests: 2
+  respect_robots_txt: true
+
+# Custom headers and session management
+request_settings:
+  headers:
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+    "Accept-Language": "en-US,en;q=0.5"
+    "Accept-Encoding": "gzip, deflate"
+    "Connection": "keep-alive"
+    "Upgrade-Insecure-Requests": "1"
+  cookies_enabled: true
+  session_persistence: true
+  verify_ssl: true
+
+# Error handling specific to HDFC
+error_handling:
+  max_retries: 3
+  retry_codes: [429, 500, 502, 503, 504]
+  backoff_factor: 2
+  timeout_errors_retry: true

@@ -1,0 +1,109 @@
+# ICICI PRUDENTIAL SCRAPER CONFIGURATION
+# =====================================
+
+amc_name: "ICICI"
+full_name: "ICICI Prudential Asset Management Company Limited"
+website: "https://www.icicipruamc.com"
+active: true
+
+# Different source types for disclosures
+disclosure_sources:
+  website:
+    enabled: true
+    base_url: "https://www.icicipruamc.com/investor-corner/disclosures"
+    navigation_urls:
+      - "https://www.icicipruamc.com/investor-corner/disclosures/portfolio-disclosures"
+      - "https://www.icicipruamc.com/downloads/disclosures"
+    
+  api:
+    enabled: false
+    base_url: ""
+    
+  ftp:
+    enabled: false
+
+# Fund type specific scraping configurations
+fund_types:
+  corporate-bond:
+    source_type: "website"
+    url_patterns:
+      - "/corporate-bond"
+      - "/bond-funds"
+    file_patterns:
+      - "*ICICI*Corporate*Bond*"
+      - "*ICICI*Corp*Bd*"
+      - "*Corporate*Bond*ICICI*"
+    expected_formats: [".xlsx", ".xls", ".pdf"]
+    frequency: "monthly"
+    css_selectors:
+      - "a[href*='corporate']"
+      - "a[href*='bond']"
+      - ".fund-disclosure"
+    
+  money-market:
+    source_type: "website"
+    url_patterns:
+      - "/money-market"
+      - "/liquid-fund"
+    file_patterns:
+      - "*ICICI*Money*Market*"
+      - "*ICICI*Liquid*"
+      - "*Money*Market*ICICI*"
+    expected_formats: [".xlsx", ".xls"]
+    frequency: "monthly"
+    css_selectors:
+      - "a[href*='money']"
+      - "a[href*='liquid']"
+      
+  equity:
+    source_type: "website"
+    url_patterns:
+      - "/equity-funds"
+      - "/equity-scheme"
+    file_patterns:
+      - "*ICICI*Equity*"
+      - "*ICICI*Diversified*"
+    expected_formats: [".xlsx", ".xls"]
+    frequency: "monthly"
+
+# Parsing strategies
+parsing_strategies:
+  excel:
+    sheet_detection: "auto"
+    header_detection: "auto" 
+    fallback_sheet: "Portfolio"
+    fallback_header_row: 6
+    
+  pdf:
+    extraction_method: "pdfplumber"
+    pages: "all"
+
+# ICICI-specific validation rules
+validation:
+  required_columns: ["isin", "security_name", "market_value"]
+  min_rows: 8
+  max_file_age_days: 45
+  column_aliases:
+    instrument_name: ["security_name", "instrument", "security"]
+
+# Rate limiting
+rate_limiting:
+  requests_per_minute: 25
+  delay_between_requests: 3
+  respect_robots_txt: true
+
+# Request settings
+request_settings:
+  headers:
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+  cookies_enabled: true
+  session_persistence: true
+  verify_ssl: true
+
+# Error handling
+error_handling:
+  max_retries: 3
+  retry_codes: [429, 500, 502, 503, 504]
+  backoff_factor: 1.5
+  timeout_errors_retry: true

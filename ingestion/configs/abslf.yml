@@ -1,0 +1,80 @@
+# ADITYA BIRLA SUN LIFE SCRAPER CONFIGURATION
+# ==========================================
+
+amc_name: "ABSLF"
+full_name: "Aditya Birla Sun Life Asset Management Company Limited"
+website: "https://mutualfund.adityabirlacapital.com"
+active: true
+
+# Scraping strategy
+scraping_strategy: "direct_url"
+
+# Base URL patterns for different disclosure types
+url_patterns:
+  monthly_portfolio: "https://mutualfund.adityabirlacapital.com/-/media/bsl/files/resources/monthly-portfolio/{year}/sebi_monthly_portfolio-{date}.zip"
+  fortnightly_portfolio: "https://mutualfund.adityabirlacapital.com/-/media/bsl/files/resources/fortnightly-portfolio/{year}/sebi_fortnightly_portfolio_{date}.zip"
+
+# Disclosure types configuration
+disclosure_types:
+  monthly:
+    pattern_key: "monthly_portfolio"
+    frequency: "monthly"
+    date_patterns:
+      - "31-january-{year}"
+      - "28-february-{year}"
+      - "31-march-{year}"
+      - "30-april-{year}"
+      - "31-may-{year}"
+      - "30-june-{year}"
+      - "31-july-{year}"
+      - "31-august-{year}"
+      - "30-september-{year}"
+      - "31-october-{year}"
+      - "30-november-{year}"
+      - "31-december-{year}"
+      
+  fortnightly:
+    pattern_key: "fortnightly_portfolio" 
+    frequency: "fortnightly"
+    date_patterns:
+      # First half of month (15th)
+      - "15-jan-{year}"
+      - "15-feb-{year}"
+      - "15-mar-{year}"
+      - "15-apr-{year}"
+      - "15-may-{year}"
+      - "15-jun-{year}"
+      - "15-jul-{year}"
+      - "15-aug-{year}"
+      - "15-sep-{year}"
+      - "15-oct-{year}"
+      - "15-nov-{year}"
+      - "15-dec-{year}"
+      # End of month dates
+      - "31-jan-{year}"
+      - "28-feb-{year}"
+      - "31-mar-{year}"
+      - "30-apr-{year}"
+      - "31-may-{year}"
+      - "30-jun-{year}"
+      - "31-jul-{year}"
+      - "31-aug-{year}"
+      - "30-sep-{year}"
+      - "31-oct-{year}"
+      - "30-nov-{year}"
+      - "31-dec-{year}"
+
+# Output configuration
+output:
+  base_dir: "data/raw"
+  folder_structure: "{date}/{amc_name}"
+  
+# Request settings
+request_settings:
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+  timeout: 30
+  delay_between_requests: 2
+  max_retries: 3
+
+# Years to check (current and previous year by default)
+years_to_check: 2

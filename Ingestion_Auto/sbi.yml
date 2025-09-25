@@ -26,20 +26,46 @@ fund_types:
 # Column mappings - maps standard fields to SBI-specific column names
 column_mappings:
   isin: "ISIN"
-  instrument_name: "Name of the Instrument"
-  market_value: "Market Value (Rs. In Lacs)"
-  nav_percentage: "% to Net Assets"
-  yield: "Yield"
-  rating: "Rating"
+  instrument_name: "Name of the Instrument / Issuer"
+  market_value: "Market value\n(Rs. in Lakhs)"
+  nav_percentage: "% to AUM"
+  yield: "YTM %"
+  rating: "Rating / Industry^"
   quantity: "Quantity"
+
+# Enhanced security type classification
+security_types:
+  isin_securities:
+    validation: "12_char_alpha_prefix" 
+    keywords: []
+    
+  cash_equivalents:
+    keywords: ["Short Term Deposits", "Term Deposits Placed as Margins", "TREPS", "Reverse Repo", "Cash", "Bank", "Margin amount"]
+    validation: "no_isin_required"
+    
+  summary_rows:
+    keywords: ["Total", "GRAND TOTAL", "Net Receivable", "Net Payable", "Other Current Assets", "AUM"]
+    validation: "summary_line"
+    
+  special_situations:
+    keywords: ["STRIPS", "Alternative Investment", "Mutual Fund Units", "Gold"]
+    validation: "special_instrument"
 
 # Data processing rules
 processing:
   # SBI typically has clean percentage formatting
   yield_conversion: "none"
   nav_conversion: "none"
+  capture_all_securities: true  # Enable comprehensive extraction
 
-# Validation rules
+# Enhanced validation rules
 validation:
-  required_columns: ["ISIN", "Name of the Instrument", "Market Value (Rs. In Lacs)"]
+  required_columns: ["ISIN", "Name of the Instrument / Issuer", "Market value\n(Rs. in Lakhs)"]
   isin_format: "12_char_alpha_prefix"
+  
+  # Portfolio completeness checks
+  completeness:
+    nav_reconciliation_tolerance: 1.5  # Allow 1.5% difference  
+    min_cash_expected: 1.0  # Minimum 1% cash expected
+    max_cash_expected: 15.0  # Maximum 15% cash reasonable
+    min_portfolio_coverage: 96.0  # Minimum 96% of NAV should be accounted for

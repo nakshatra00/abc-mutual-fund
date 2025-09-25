@@ -1,0 +1,106 @@
+# UTI MUTUAL FUND SCRAPER CONFIGURATION
+# ====================================
+
+amc_name: "UTI"
+full_name: "UTI Mutual Fund"
+website: "https://www.utimf.com"
+active: true
+
+# Different source types for disclosures
+disclosure_sources:
+  website:
+    enabled: true
+    base_url: "https://www.utimf.com/investor-corner/disclosures"
+    navigation_urls:
+      - "https://www.utimf.com/investor-corner/disclosures/portfolio-disclosure"
+      - "https://www.utimf.com/downloads/portfolio"
+    
+  api:
+    enabled: false
+    
+  ftp:
+    enabled: false
+
+# Fund type specific scraping configurations
+fund_types:
+  corporate-bond:
+    source_type: "website"
+    url_patterns:
+      - "/corporate-bond"
+      - "/bond-fund"
+    file_patterns:
+      - "*UTI*Corporate*Bond*"
+      - "*UTI*Corp*Bond*"
+      - "*Corporate*Bond*UTI*"
+    expected_formats: [".xls", ".xlsx"]
+    frequency: "monthly"
+    css_selectors:
+      - "a[href*='corporate']"
+      - "a[href*='bond']"
+      - ".disclosure-download"
+    
+  money-market:
+    source_type: "website"
+    url_patterns:
+      - "/money-market"
+      - "/liquid"
+    file_patterns:
+      - "*UTI*Money*Market*"
+      - "*UTI*Liquid*"
+      - "*Money*Market*UTI*"
+    expected_formats: [".xls", ".xlsx"]
+    frequency: "monthly"
+    css_selectors:
+      - "a[href*='money']"
+      - "a[href*='liquid']"
+
+# UTI uses older Excel formats predominantly
+parsing_strategies:
+  excel:
+    sheet_detection: "name_pattern"  # UTI has specific sheet naming
+    header_detection: "auto"
+    fallback_sheet: "EXPOSURE"
+    fallback_header_row: 6
+    sheet_patterns:
+      - "EXPOSURE"
+      - "Portfolio"
+      - "Holdings"
+    
+  pdf:
+    extraction_method: "tabula"
+    pages: "all"
+
+# UTI-specific validation
+validation:
+  required_columns: ["isin", "name_of_the_instrument", "market_value"]
+  min_rows: 10
+  max_file_age_days: 45
+  column_aliases:
+    instrument_name: ["name_of_the_instrument", "instrument", "security_name"]
+  scheme_filtering:
+    enabled: true
+    target_schemes:
+      - "UTI - Corporate Bond Fund"
+      - "UTI - Money Market Fund"
+
+# Rate limiting - UTI site is slower
+rate_limiting:
+  requests_per_minute: 20
+  delay_between_requests: 4
+  respect_robots_txt: true
+
+# Request settings
+request_settings:
+  headers:
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+  cookies_enabled: true
+  session_persistence: true
+  verify_ssl: true
+
+# Error handling
+error_handling:
+  max_retries: 4
+  retry_codes: [429, 500, 502, 503, 504]
+  backoff_factor: 2
+  timeout_errors_retry: true

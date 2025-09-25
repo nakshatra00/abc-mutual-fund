@@ -1,6 +1,4 @@
-# KOTAK MAHINDRA ASSET MANAGEMENT EXTRACTIO  # Kotak has clean percentage formatting
-  yield_conversion: "none"
-  nav_conversion: "none"GURATION
+# KOTAK MAHINDRA ASSET MANAGEMENT EXTRACTION CONFIGURATION
 # ========================================================
 
 amc_name: "KOTAK"

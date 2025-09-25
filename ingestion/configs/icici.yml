@@ -1,0 +1,98 @@
+amc_name: "ICICI"
+full_name: "ICICI Prudential Asset Management Company"
+
+# Scraping strategy - requires browser automation
+scraping_strategy: "dynamic_html"
+
+# Years to check (current year and previous years)
+years_to_check: 2
+
+# Browser settings for dynamic HTML scraping
+browser_settings:
+  driver: "chrome"
+  wait_timeout: 30
+  implicit_wait: 10
+  page_load_timeout: 30
+
+# Request settings
+request_settings:
+  timeout: 30
+  retry_attempts: 3
+  user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+
+# Output settings
+output:
+  base_dir: "data/raw"
+  
+# Disclosure types configuration
+disclosure_types:
+  fortnightly:
+    base_url: "https://www.icicipruamc.com/media-center/downloads?currentTabFilter=OtherSchemeDisclosures&&subCatTabFilter=Fortnightly%20Portfolio%20Disclosures"
+    title_patterns:
+      - "Fortnightly Debt Scheme Portfolio.*?{day}.*?{month}.*?{year}"
+      - "Fortnightly Debt Schemes Portfolio.*?{day}.*?{month}.*?{year}"
+    link_selectors:
+      - 'a[href*="download"]'
+      - 'button:contains("DOWNLOAD")'
+      - 'a[title*="Download"]'
+      - '.download-btn'
+    file_extensions: [".xlsx", ".xls", ".zip"]
+    target_dates:
+      - "15-sep-2025"
+      - "31-aug-2025"
+      - "15-aug-2025"
+      - "31-jul-2025"
+      - "15-jul-2025"
+      - "30-jun-2025"
+    
+  monthly:
+    base_url: "https://www.icicipruamc.com/media-center/downloads?currentTabFilter=OtherSchemeDisclosures&&subCatTabFilter=Monthly%20Portfolio%20Disclosures"
+    title_patterns:
+      - "Monthly Debt Scheme Portfolio.*?{month}.*?{year}"
+      - "Monthly Portfolio.*?{month}.*?{year}"
+    link_selectors:
+      - 'a[href*="download"]'
+      - 'button:contains("DOWNLOAD")'
+      - 'a[title*="Download"]'
+      - '.download-btn'
+    file_extensions: [".xlsx", ".xls", ".zip"]
+    target_dates:
+      - "31-aug-2025"
+      - "31-jul-2025"
+      - "30-jun-2025"
+      - "31-may-2025"
+      - "30-apr-2025"
+      - "31-mar-2025"
+
+# Fund type patterns for file organization
+fund_type_patterns:
+  corporate-bond:
+    - "corporate.?bond"
+    - "corp.?bond"
+    - "credit.?risk"
+    - "dynamic.?bond"
+    - "banking.?psu"
+    - "medium.?term"
+  
+  money-market:
+    - "money.?market"
+    - "liquid"
+    - "ultra.?short"
+    - "overnight"
+    - "cash"
+    - "savings"
+  
+  gilt:
+    - "gilt"
+    - "government"
+    - "10.?year"
+    - "constant.?maturity"
+  
+  equity:
+    - "focused.?equity"
+    - "bluechip"
+    - "value.?discovery"
+    - "multi.?cap"
+    - "large.?cap"
+    - "mid.?cap"
+    - "small.?cap"

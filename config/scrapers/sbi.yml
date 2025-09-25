@@ -1,0 +1,53 @@
+# SBI MUTUAL FUND SCRAPER CONFIGURATION
+# ====================================
+
+amc_name: "SBI"
+full_name: "SBI Funds Management Private Limited"
+website: "https://www.sbimf.com"
+active: true
+
+disclosure_sources:
+  website:
+    enabled: true
+    base_url: "https://www.sbimf.com/investor-corner/disclosures"
+    navigation_urls:
+      - "https://www.sbimf.com/investor-corner/disclosures/portfolio-disclosures"
+      - "https://www.sbimf.com/downloads"
+
+fund_types:
+  corporate-bond:
+    source_type: "website"
+    url_patterns:
+      - "/corporate-bond"
+      - "/debt-funds"
+    file_patterns:
+      - "*SBI*Corporate*Bond*"
+      - "*SBI*Corp*Bond*"
+    expected_formats: [".xlsx", ".xls"]
+    frequency: "monthly"
+    
+  money-market:
+    source_type: "website"
+    url_patterns:
+      - "/money-market"
+      - "/liquid"
+    file_patterns:
+      - "*SBI*Money*Market*"
+      - "*SBI*Liquid*"
+    expected_formats: [".xlsx", ".xls"]
+    frequency: "monthly"
+
+parsing_strategies:
+  excel:
+    sheet_detection: "auto"
+    header_detection: "auto"
+    fallback_sheet: 0
+    fallback_header_row: 5
+
+validation:
+  required_columns: ["isin", "instrument_name", "market_value"]
+  min_rows: 5
+
+rate_limiting:
+  requests_per_minute: 30
+  delay_between_requests: 2

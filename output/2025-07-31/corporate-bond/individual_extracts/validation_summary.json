@@ -1,0 +1,518 @@
+{
+  "SBI": {
+    "fund_info": {
+      "amc": NaN,
+      "fund_name": NaN,
+      "total_holdings": 133,
+      "as_of_date": "2025-07-31"
+    },
+    "completeness": {
+      "nav_coverage": {
+        "value": 97.21000000000001,
+        "passed": "True",
+        "severity": "pass",
+        "message": "NAV Coverage: 97.2% (min: 95.0%)"
+      },
+      "nav_variance": {
+        "value": 2.789999999999992,
+        "passed": "False",
+        "severity": "warning",
+        "message": "NAV Variance: \u00b12.8% (max: \u00b12.0%)"
+      },
+      "holdings_count": {
+        "value": 133,
+        "passed": true,
+        "severity": "pass",
+        "message": "Holdings Count: 133 (min: 10)"
+      },
+      "cash_component": {
+        "value": 21.34,
+        "passed": "False",
+        "severity": "warning",
+        "message": "Cash Component: 21.3% (expected: 0.5-20.0%)"
+      },
+      "isin_coverage": {
+        "value": 75.87,
+        "passed": "True",
+        "severity": "pass",
+        "message": "ISIN Securities: 75.9% of portfolio"
+      }
+    },
+    "quality": {
+      "zero_values": {
+        "value": 0.23308270676691728,
+        "passed": "False",
+        "severity": "warning",
+        "message": "Zero Values: 23.3% (31/133)"
+      },
+      "top10_concentration": {
+        "value": 35.400000000000006,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Top 10 Concentration: 35.4% (min: 30.0%)"
+      },
+      "single_holding_risk": {
+        "value": 9.34,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Largest Holding: 9.3% (max: 20.0%)"
+      },
+      "yield_reasonableness": {
+        "value": 6.939160155445545,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Average Yield: 6.94% (expected: 0.0-25.0%)"
+      }
+    },
+    "business": {
+      "unrated_exposure": {
+        "value": 2.08,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Unrated Exposure: 2.1% (max: 15.0%)"
+      },
+      "investment_grade": {
+        "value": 77.53999999999999,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Investment Grade: 77.5% (min: 70.0%)"
+      },
+      "cash_limits": {
+        "value": 21.339999999999996,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Cash Equivalents: 21.3% (max: 25.0%)"
+      },
+      "diversification": {
+        "value": 0.97717273,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Diversification Score: 0.98 (min: 0.6)"
+      }
+    },
+    "summary": {
+      "overall_score": 76.92307692307693,
+      "total_checks": 13,
+      "passed_checks": 10,
+      "critical_issues": 0,
+      "warning_issues": 3,
+      "quality_grade": "C+"
+    }
+  },
+  "UTI": {
+    "fund_info": {
+      "amc": NaN,
+      "fund_name": NaN,
+      "total_holdings": 107,
+      "as_of_date": "2025-07-31"
+    },
+    "completeness": {
+      "nav_coverage": {
+        "value": 91.78999999999999,
+        "passed": "False",
+        "severity": "warning",
+        "message": "NAV Coverage: 91.8% (min: 95.0%)"
+      },
+      "nav_variance": {
+        "value": 8.210000000000008,
+        "passed": "False",
+        "severity": "critical",
+        "message": "NAV Variance: \u00b18.2% (max: \u00b12.0%)"
+      },
+      "holdings_count": {
+        "value": 107,
+        "passed": true,
+        "severity": "pass",
+        "message": "Holdings Count: 107 (min: 10)"
+      },
+      "cash_component": {
+        "value": 27.78,
+        "passed": "False",
+        "severity": "warning",
+        "message": "Cash Component: 27.8% (expected: 0.5-20.0%)"
+      },
+      "isin_coverage": {
+        "value": 64.01,
+        "passed": "True",
+        "severity": "warning",
+        "message": "ISIN Securities: 64.0% of portfolio"
+      }
+    },
+    "quality": {
+      "zero_values": {
+        "value": 0.21495327102803738,
+        "passed": "False",
+        "severity": "warning",
+        "message": "Zero Values: 21.5% (23/107)"
+      },
+      "top10_concentration": {
+        "value": 28.580000000000002,
+        "passed": "False",
+        "severity": "warning",
+        "message": "Top 10 Concentration: 28.6% (min: 30.0%)"
+      },
+      "single_holding_risk": {
+        "value": 5.73,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Largest Holding: 5.7% (max: 20.0%)"
+      },
+      "yield_reasonableness": {
+        "value": 6.85890243902439,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Average Yield: 6.86% (expected: 0.0-25.0%)"
+      }
+    },
+    "business": {
+      "unrated_exposure": {
+        "value": 0.0,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Unrated Exposure: 0.0% (max: 15.0%)"
+      },
+      "investment_grade": {
+        "value": 79.14,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Investment Grade: 79.1% (min: 70.0%)"
+      },
+      "cash_limits": {
+        "value": 27.779999999999998,
+        "passed": "False",
+        "severity": "warning",
+        "message": "Cash Equivalents: 27.8% (max: 25.0%)"
+      },
+      "diversification": {
+        "value": 0.98387105,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Diversification Score: 0.98 (min: 0.6)"
+      }
+    },
+    "summary": {
+      "overall_score": 53.84615384615385,
+      "total_checks": 13,
+      "passed_checks": 7,
+      "critical_issues": 1,
+      "warning_issues": 5,
+      "quality_grade": "F"
+    }
+  },
+  "ABSLF": {
+    "fund_info": {
+      "amc": "ABSLF",
+      "fund_name": "Aditya Birla Sun Life Corporate Bond Fund",
+      "total_holdings": 224,
+      "as_of_date": "2025-07-31"
+    },
+    "completeness": {
+      "nav_coverage": {
+        "value": 97.86940062129122,
+        "passed": "True",
+        "severity": "pass",
+        "message": "NAV Coverage: 97.9% (min: 95.0%)"
+      },
+      "nav_variance": {
+        "value": 2.13059937870878,
+        "passed": "False",
+        "severity": "warning",
+        "message": "NAV Variance: \u00b12.1% (max: \u00b12.0%)"
+      },
+      "holdings_count": {
+        "value": 224,
+        "passed": true,
+        "severity": "pass",
+        "message": "Holdings Count: 224 (min: 10)"
+      }
+    },
+    "quality": {
+      "zero_values": {
+        "value": 0.0,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Zero Values: 0.0% (0/224)"
+      },
+      "top10_concentration": {
+        "value": 37.00799116798904,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Top 10 Concentration: 37.0% (min: 30.0%)"
+      },
+      "single_holding_risk": {
+        "value": 9.51506655062674,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Largest Holding: 9.5% (max: 20.0%)"
+      },
+      "yield_reasonableness": {
+        "value": 6.843451098654708,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Average Yield: 6.84% (expected: 0.0-25.0%)"
+      }
+    },
+    "business": {
+      "unrated_exposure": {
+        "value": 0.274231266985977,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Unrated Exposure: 0.3% (max: 15.0%)"
+      },
+      "investment_grade": {
+        "value": 73.4320174834607,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Investment Grade: 73.4% (min: 70.0%)"
+      },
+      "diversification": {
+        "value": 0.9762707753170794,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Diversification Score: 0.98 (min: 0.6)"
+      }
+    },
+    "summary": {
+      "overall_score": 90.0,
+      "total_checks": 10,
+      "passed_checks": 9,
+      "critical_issues": 0,
+      "warning_issues": 1,
+      "quality_grade": "A"
+    }
+  },
+  "HDFC": {
+    "fund_info": {
+      "amc": "HDFC",
+      "fund_name": "HDFC Corporate Bond Fund",
+      "total_holdings": 228,
+      "as_of_date": "2025-07-31"
+    },
+    "completeness": {
+      "nav_coverage": {
+        "value": "0",
+        "passed": "False",
+        "severity": "critical",
+        "message": "NAV Coverage: 0.0% (min: 95.0%)"
+      },
+      "nav_variance": {
+        "value": 100.0,
+        "passed": "False",
+        "severity": "critical",
+        "message": "NAV Variance: \u00b1100.0% (max: \u00b12.0%)"
+      },
+      "holdings_count": {
+        "value": 228,
+        "passed": true,
+        "severity": "pass",
+        "message": "Holdings Count: 228 (min: 10)"
+      }
+    },
+    "quality": {
+      "zero_values": {
+        "value": 0.0,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Zero Values: 0.0% (0/228)"
+      },
+      "top10_concentration": {
+        "value": "0",
+        "passed": "False",
+        "severity": "warning",
+        "message": "Top 10 Concentration: 0.0% (min: 30.0%)"
+      },
+      "single_holding_risk": {
+        "value": "0",
+        "passed": "True",
+        "severity": "pass",
+        "message": "Largest Holding: 0.0% (max: 20.0%)"
+      },
+      "yield_reasonableness": {
+        "value": 6.858396475770926,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Average Yield: 6.86% (expected: 0.0-25.0%)"
+      }
+    },
+    "business": {
+      "unrated_exposure": {
+        "value": "0",
+        "passed": "True",
+        "severity": "pass",
+        "message": "Unrated Exposure: 0.0% (max: 15.0%)"
+      },
+      "investment_grade": {
+        "value": "0",
+        "passed": "False",
+        "severity": "warning",
+        "message": "Investment Grade: 0.0% (min: 70.0%)"
+      },
+      "diversification": {
+        "value": 1.0,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Diversification Score: 1.00 (min: 0.6)"
+      }
+    },
+    "summary": {
+      "overall_score": 60.0,
+      "total_checks": 10,
+      "passed_checks": 6,
+      "critical_issues": 2,
+      "warning_issues": 2,
+      "quality_grade": "F"
+    }
+  },
+  "NIPPON": {
+    "fund_info": {
+      "amc": "NIPPON",
+      "fund_name": "Nippon India Corporate Bond Fund",
+      "total_holdings": 141,
+      "as_of_date": "2025-07-31"
+    },
+    "completeness": {
+      "nav_coverage": {
+        "value": "0",
+        "passed": "False",
+        "severity": "critical",
+        "message": "NAV Coverage: 0.0% (min: 95.0%)"
+      },
+      "nav_variance": {
+        "value": 100.0,
+        "passed": "False",
+        "severity": "critical",
+        "message": "NAV Variance: \u00b1100.0% (max: \u00b12.0%)"
+      },
+      "holdings_count": {
+        "value": 141,
+        "passed": true,
+        "severity": "pass",
+        "message": "Holdings Count: 141 (min: 10)"
+      }
+    },
+    "quality": {
+      "zero_values": {
+        "value": 0.0,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Zero Values: 0.0% (0/141)"
+      },
+      "top10_concentration": {
+        "value": "0",
+        "passed": "False",
+        "severity": "warning",
+        "message": "Top 10 Concentration: 0.0% (min: 30.0%)"
+      },
+      "single_holding_risk": {
+        "value": "0",
+        "passed": "True",
+        "severity": "pass",
+        "message": "Largest Holding: 0.0% (max: 20.0%)"
+      }
+    },
+    "business": {
+      "unrated_exposure": {
+        "value": "0",
+        "passed": "True",
+        "severity": "pass",
+        "message": "Unrated Exposure: 0.0% (max: 15.0%)"
+      },
+      "investment_grade": {
+        "value": "0",
+        "passed": "False",
+        "severity": "warning",
+        "message": "Investment Grade: 0.0% (min: 70.0%)"
+      },
+      "diversification": {
+        "value": 1.0,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Diversification Score: 1.00 (min: 0.6)"
+      }
+    },
+    "summary": {
+      "overall_score": 55.55555555555556,
+      "total_checks": 9,
+      "passed_checks": 5,
+      "critical_issues": 2,
+      "warning_issues": 2,
+      "quality_grade": "F"
+    }
+  },
+  "ICICI": {
+    "fund_info": {
+      "amc": "ICICI",
+      "fund_name": "ICICI Prudential Corporate Bond Fund",
+      "total_holdings": 199,
+      "as_of_date": "2025-07-31"
+    },
+    "completeness": {
+      "nav_coverage": {
+        "value": 0.9595058008116,
+        "passed": "False",
+        "severity": "critical",
+        "message": "NAV Coverage: 1.0% (min: 95.0%)"
+      },
+      "nav_variance": {
+        "value": 99.0404941991884,
+        "passed": "False",
+        "severity": "critical",
+        "message": "NAV Variance: \u00b199.0% (max: \u00b12.0%)"
+      },
+      "holdings_count": {
+        "value": 199,
+        "passed": true,
+        "severity": "pass",
+        "message": "Holdings Count: 199 (min: 10)"
+      }
+    },
+    "quality": {
+      "zero_values": {
+        "value": 0.0,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Zero Values: 0.0% (0/199)"
+      },
+      "top10_concentration": {
+        "value": 0.28483640363640006,
+        "passed": "False",
+        "severity": "warning",
+        "message": "Top 10 Concentration: 0.3% (min: 30.0%)"
+      },
+      "single_holding_risk": {
+        "value": 0.0582204263796,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Largest Holding: 0.1% (max: 20.0%)"
+      }
+    },
+    "business": {
+      "unrated_exposure": {
+        "value": 0.9595058008116,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Unrated Exposure: 1.0% (max: 15.0%)"
+      },
+      "investment_grade": {
+        "value": 0.9595058008116,
+        "passed": "False",
+        "severity": "warning",
+        "message": "Investment Grade: 1.0% (min: 70.0%)"
+      },
+      "diversification": {
+        "value": 0.9999985874304447,
+        "passed": "True",
+        "severity": "pass",
+        "message": "Diversification Score: 1.00 (min: 0.6)"
+      }
+    },
+    "summary": {
+      "overall_score": 55.55555555555556,
+      "total_checks": 9,
+      "passed_checks": 5,
+      "critical_issues": 2,
+      "warning_issues": 2,
+      "quality_grade": "F"
+    }
+  }
+}

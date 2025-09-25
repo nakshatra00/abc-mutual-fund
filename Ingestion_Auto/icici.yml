@@ -13,7 +13,7 @@ file_patterns:
 fund_types:
   corporate-bond:
     sheet_name: "CORPORATE BOND"
-    header_row: 4  # Excel row number (1-based)
+    header_row: 3  # Excel row number (1-based)
     fund_name: "ICICI Prudential Corporate Bond Fund"
     file_format: ".xlsx"
     
@@ -26,8 +26,8 @@ fund_types:
 # Column mappings - maps standard fields to ICICI-specific column names
 column_mappings:
   isin: "ISIN"
-  instrument_name: "Name of the Instrument"
-  market_value: "Market Value/Exposure (Rs. In Lacs)"  # ICICI uses "Exposure" terminology
+  instrument_name: "Company/Issuer/Instrument Name"
+  market_value: "Exposure/Market Value(Rs.Lakh)"
   nav_percentage: "% to Nav"
   yield: "Yield"
   rating: "Rating"

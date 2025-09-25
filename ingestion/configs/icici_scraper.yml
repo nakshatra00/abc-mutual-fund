@@ -1,0 +1,96 @@
+amc_name: "ICICI"
+full_name: "ICICI Prudential Asset Management Company"
+
+# Scraping strategy - can be 'direct_url' or 'dynamic_html' or 'api'
+scraping_strategy: "dynamic_html"
+
+# Years to check (current year and previous years)
+years_to_check: 2
+
+# Disclosure types configuration
+disclosure_types:
+  fortnightly:
+    base_url: "https://www.icicipruamc.com/media-center/downloads?currentTabFilter=OtherSchemeDisclosures&&subCatTabFilter=Fortnightly%20Portfolio%20Disclosures"
+    title_patterns:
+      - "Fortnightly Debt Scheme Portfolio.*?\\d{1,2}[st|nd|rd|th]*\\s+\\w+\\s+\\d{4}"
+      - "Fortnightly Debt Schemes Portfolio.*?\\d{1,2}\\s+\\w+\\s+\\d{4}"
+    link_selectors:
+      - 'a[href*="download"]'
+      - 'button:contains("DOWNLOAD")'
+    file_extensions: [".xlsx", ".xls", ".zip"]
+    
+  monthly:
+    base_url: "https://www.icicipruamc.com/media-center/downloads?currentTabFilter=OtherSchemeDisclosures&&subCatTabFilter=Monthly%20Portfolio%20Disclosures"
+    title_patterns:
+      - "Monthly Debt Scheme Portfolio.*?\\d{1,2}[st|nd|rd|th]*\\s+\\w+\\s+\\d{4}"
+      - "Monthly Portfolio.*?\\d{1,2}\\s+\\w+\\s+\\d{4}"
+    link_selectors:
+      - 'a[href*="download"]'
+      - 'button:contains("DOWNLOAD")'
+    file_extensions: [".xlsx", ".xls", ".zip"]
+
+# Fund type patterns for file organization
+fund_type_patterns:
+  corporate-bond:
+    - "corporate.?bond"
+    - "corp.?bond"
+    - "credit.?risk"
+    - "dynamic.?bond"
+    - "banking.?psu"
+  
+  money-market:
+    - "money.?market"
+    - "liquid"
+    - "ultra.?short"
+    - "overnight"
+    - "cash"
+  
+  gilt:
+    - "gilt"
+    - "government"
+    - "g.?sec"
+    - "sovereign"
+  
+  hybrid:
+    - "hybrid"
+    - "balanced"
+    - "conservative"
+    - "aggressive"
+    - "multi.?asset"
+  
+  equity:
+    - "equity"
+    - "large.?cap"
+    - "mid.?cap"
+    - "small.?cap"
+    - "multi.?cap"
+    - "focused"
+    - "value"
+    - "growth"
+
+# Request settings
+request_settings:
+  user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+  delay_between_requests: 3
+  timeout: 30
+  max_retries: 3
+
+# Output settings
+output:
+  base_dir: "data/raw"
+  create_fund_type_folders: true
+  preserve_original_structure: false
+
+# Special handling for ICICI
+special_handling:
+  # ICICI files often come as ZIP with multiple fund files inside
+  extract_zip_files: true
+  
+  # Some downloads may require session handling or specific headers
+  requires_session_cookies: true
+  
+  # Download URLs might be dynamic/generated
+  follow_redirects: true
+  
+  # Some files might be behind JavaScript-generated links
+  javascript_required: false  # Set to true if we need selenium later

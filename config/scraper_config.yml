@@ -1,0 +1,69 @@
+# MAIN SCRAPER CONFIGURATION
+# ===========================
+
+scraper:
+  base_output_dir: "data/raw"
+  download_timeout: 30
+  retry_attempts: 3
+  retry_delay: 5  # seconds
+  parallel_downloads: 5
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+  
+# Global settings for all scrapers
+global_settings:
+  max_file_age_days: 45
+  min_file_size_kb: 10
+  max_file_size_mb: 50
+  allowed_extensions: [".xlsx", ".xls", ".pdf", ".csv"]
+  
+# Scheduling configuration
+schedule:
+  frequency: "daily"  # daily, weekly, monthly
+  time: "06:00"
+  timezone: "Asia/Kolkata"
+  
+# Fund types that the scraper will handle
+fund_types:
+  - corporate-bond
+  - money-market
+  - equity
+  - hybrid
+  - debt
+  - liquid
+  - elss
+
+# Logging configuration
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  file: "logs/scraper.log"
+  max_size_mb: 10
+  backup_count: 5
+  
+# Notification settings
+notifications:
+  enabled: true
+  email:
+    enabled: false
+    smtp_server: ""
+    smtp_port: 587
+    username: ""
+    password: ""
+    recipients: []
+  slack:
+    enabled: false
+    webhook_url: ""
+    channel: "#mutual-funds"
+
+# Data validation settings
+validation:
+  strict_mode: false
+  required_columns: ["isin", "instrument_name", "market_value"]
+  min_rows_per_file: 5
+  duplicate_handling: "latest"  # latest, oldest, skip
+
+# Storage settings
+storage:
+  keep_original_files: true
+  compress_old_files: true
+  backup_to_cloud: false
+  cloud_provider: ""  # aws, gcp, azure

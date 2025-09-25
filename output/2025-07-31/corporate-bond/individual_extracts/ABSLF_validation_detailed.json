@@ -1,0 +1,82 @@
+{
+  "fund_info": {
+    "amc": "ABSLF",
+    "fund_name": "Aditya Birla Sun Life Corporate Bond Fund",
+    "total_holdings": 224,
+    "as_of_date": "2025-07-31"
+  },
+  "completeness": {
+    "nav_coverage": {
+      "value": 97.86940062129122,
+      "passed": "True",
+      "severity": "pass",
+      "message": "NAV Coverage: 97.9% (min: 95.0%)"
+    },
+    "nav_variance": {
+      "value": 2.13059937870878,
+      "passed": "False",
+      "severity": "warning",
+      "message": "NAV Variance: \u00b12.1% (max: \u00b12.0%)"
+    },
+    "holdings_count": {
+      "value": 224,
+      "passed": true,
+      "severity": "pass",
+      "message": "Holdings Count: 224 (min: 10)"
+    }
+  },
+  "quality": {
+    "zero_values": {
+      "value": 0.0,
+      "passed": "True",
+      "severity": "pass",
+      "message": "Zero Values: 0.0% (0/224)"
+    },
+    "top10_concentration": {
+      "value": 37.00799116798904,
+      "passed": "True",
+      "severity": "pass",
+      "message": "Top 10 Concentration: 37.0% (min: 30.0%)"
+    },
+    "single_holding_risk": {
+      "value": 9.51506655062674,
+      "passed": "True",
+      "severity": "pass",
+      "message": "Largest Holding: 9.5% (max: 20.0%)"
+    },
+    "yield_reasonableness": {
+      "value": 6.843451098654708,
+      "passed": "True",
+      "severity": "pass",
+      "message": "Average Yield: 6.84% (expected: 0.0-25.0%)"
+    }
+  },
+  "business": {
+    "unrated_exposure": {
+      "value": 0.274231266985977,
+      "passed": "True",
+      "severity": "pass",
+      "message": "Unrated Exposure: 0.3% (max: 15.0%)"
+    },
+    "investment_grade": {
+      "value": 73.4320174834607,
+      "passed": "True",
+      "severity": "pass",
+      "message": "Investment Grade: 73.4% (min: 70.0%)"
+    },
+    "diversification": {
+      "value": 0.9762707753170794,
+      "passed": "True",
+      "severity": "pass",
+      "message": "Diversification Score: 0.98 (min: 0.6)"
+    }
+  },
+  "summary": {
+    "overall_score": 90.0,
+    "total_checks": 10,
+    "passed_checks": 9,
+    "critical_issues": 0,
+    "warning_issues": 1,
+    "quality_grade": "A"
+  }
+}

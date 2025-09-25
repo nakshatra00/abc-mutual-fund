@@ -1,0 +1,111 @@
+amc_name: "HDFC"
+full_name: "HDFC Asset Management Company"
+
+# Scraping strategy
+scraping_strategy: "direct_url"
+
+# Years to check
+years_to_check: 2
+
+# URL patterns for different disclosure types
+url_patterns:
+  monthly_portfolio: "https://www.hdfcfund.com/content/dam/hdfc-fund/pdf/portfolio-disclosure/monthly/{year}/HDFC_Monthly_Portfolio_{date}_{year}.zip"
+  fortnightly_portfolio: "https://www.hdfcfund.com/content/dam/hdfc-fund/pdf/portfolio-disclosure/fortnightly/{year}/HDFC_Fortnightly_Portfolio_{date}_{year}.zip"
+
+# Disclosure types configuration
+disclosure_types:
+  monthly:
+    pattern_key: "monthly_portfolio"
+    date_patterns:
+      - "31-january"
+      - "28-february"
+      - "29-february"  # leap year
+      - "31-march"
+      - "30-april"
+      - "31-may"
+      - "30-june"
+      - "31-july"
+      - "31-august"
+      - "30-september"
+      - "31-october"
+      - "30-november"
+      - "31-december"
+      
+  fortnightly:
+    pattern_key: "fortnightly_portfolio"
+    date_patterns:
+      - "15-january"
+      - "31-january"
+      - "14-february"
+      - "28-february"
+      - "15-march"
+      - "31-march"
+      - "15-april"
+      - "30-april"
+      - "15-may"
+      - "31-may"
+      - "15-june"
+      - "30-june"
+      - "15-july"
+      - "31-july"
+      - "15-august"
+      - "31-august"
+      - "15-september"
+      - "30-september"
+      - "15-october"
+      - "31-october"
+      - "15-november"
+      - "30-november"
+      - "15-december"
+      - "31-december"
+
+# Fund type patterns
+fund_type_patterns:
+  corporate-bond:
+    - "corporate.?bond"
+    - "credit.?risk"
+    - "dynamic.?bond"
+    - "banking.?psu"
+    - "corporate.?debt"
+  
+  money-market:
+    - "money.?market"
+    - "liquid"
+    - "ultra.?short"
+    - "overnight"
+    - "cash"
+  
+  gilt:
+    - "gilt"
+    - "government"
+    - "g.?sec"
+    - "sovereign"
+  
+  hybrid:
+    - "hybrid"
+    - "balanced"
+    - "conservative"
+    - "aggressive"
+    - "multi.?asset"
+  
+  equity:
+    - "equity"
+    - "large.?cap"
+    - "mid.?cap"
+    - "small.?cap"
+    - "top.?200"
+    - "focused"
+    - "value"
+    - "growth"
+
+# Request settings
+request_settings:
+  user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+  delay_between_requests: 2
+  timeout: 30
+  max_retries: 3
+
+# Output settings
+output:
+  base_dir: "data/raw"
+  create_fund_type_folders: true

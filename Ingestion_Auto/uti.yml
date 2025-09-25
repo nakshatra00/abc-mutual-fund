@@ -1,0 +1,82 @@
+# UTI MUTUAL FUND EXTRACTION CONFIGURATION
+# ========================================
+
+amc_name: "UTI"
+full_name: "UTI Mutual Fund"
+
+# File pattern matching for different fund types
+file_patterns:
+  corporate-bond: "*UTI*Corporate*Bond*.xls"
+  money-market: "*UTI*Money*Market*.xls"
+  
+# Fund type specific configurations
+fund_types:
+  corporate-bond:
+    sheet_name: "EXPOSURE"
+    header_row: 6  # Excel row number (1-based) - will be adjusted dynamically
+    fund_name: "UTI Corporate Bond Fund"
+    file_format: ".xls"
+    target_scheme: "UTI - Corporate Bond Fund"  # Primary scheme to extract
+    
+  money-market:
+    sheet_name: "EXPOSURE"
+    header_row: 6  # Excel row number (1-based) - will be adjusted dynamically  
+    fund_name: "UTI Money Market Fund"
+    file_format: ".xls"
+    target_scheme: "UTI - Money Market Fund"  # Primary scheme to extract
+
+# Column mappings - UTI standard format
+column_mappings:
+  isin: "ISIN"
+  instrument_name: "NAME OF THE INSTRUMENT"
+  market_value: "MARKET-VALUE"
+  nav_percentage: "% TO NAV"
+  yield: "Yield"
+  rating: "RATING/INDUSTRY"
+  quantity: "QUANTITY"
+
+# UTI file structure specifics
+file_handling:
+  excel_engine: "xlrd"  # UTI uses old .xls format
+  uses_scheme_detection: true  # Special handling for multi-scheme file
+  scheme_marker: "SCHEME:"
+  header_offset: 3  # Headers are 3 rows after scheme marker
+  data_offset: 5    # Data starts 5 rows after scheme marker
+
+# Enhanced security type classification
+security_types:
+  isin_securities:
+    validation: "12_char_alpha_prefix"
+    keywords: []
+    
+  cash_equivalents:
+    keywords: ["SHORT TERM DEPOSITS", "MARGIN", "CASH", "BANK", "DEPOSIT", "BALANCE", "SETTLEMENT"]
+    validation: "no_isin_required"
+    
+  summary_rows:  
+    keywords: ["TOTAL", "GRAND TOTAL", "NET", "CLEARING CORPORATION"]
+    validation: "summary_line"
+    
+  derivatives:
+    keywords: ["SWAP", "DERIVATIVE", "FUTURES", "OPTIONS", "FORWARD"]
+    validation: "derivative_instrument"
+
+# Data processing rules  
+processing:
+  # UTI values are already in proper format
+  yield_conversion: "none"
+  nav_conversion: "none"
+  market_value_unit: "lacs"
+  capture_all_securities: true  # Enable comprehensive extraction
+  
+# Enhanced validation rules
+validation:
+  required_columns: ["ISIN", "NAME OF THE INSTRUMENT", "MARKET-VALUE"]
+  isin_format: "12_char_alpha_prefix"
+  
+  # Portfolio completeness checks
+  completeness:
+    nav_reconciliation_tolerance: 2.0  # Allow 2% difference
+    min_cash_expected: 0.5  # Minimum 0.5% cash expected
+    max_cash_expected: 20.0  # Maximum 20% cash reasonable
+    min_portfolio_coverage: 95.0  # Minimum 95% of NAV should be accounted for

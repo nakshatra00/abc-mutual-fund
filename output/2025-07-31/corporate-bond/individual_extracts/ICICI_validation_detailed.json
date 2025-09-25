@@ -1,0 +1,76 @@
+{
+  "fund_info": {
+    "amc": "ICICI",
+    "fund_name": "ICICI Prudential Corporate Bond Fund",
+    "total_holdings": 199,
+    "as_of_date": "2025-07-31"
+  },
+  "completeness": {
+    "nav_coverage": {
+      "value": 0.9595058008116,
+      "passed": "False",
+      "severity": "critical",
+      "message": "NAV Coverage: 1.0% (min: 95.0%)"
+    },
+    "nav_variance": {
+      "value": 99.0404941991884,
+      "passed": "False",
+      "severity": "critical",
+      "message": "NAV Variance: \u00b199.0% (max: \u00b12.0%)"
+    },
+    "holdings_count": {
+      "value": 199,
+      "passed": true,
+      "severity": "pass",
+      "message": "Holdings Count: 199 (min: 10)"
+    }
+  },
+  "quality": {
+    "zero_values": {
+      "value": 0.0,
+      "passed": "True",
+      "severity": "pass",
+      "message": "Zero Values: 0.0% (0/199)"
+    },
+    "top10_concentration": {
+      "value": 0.28483640363640006,
+      "passed": "False",
+      "severity": "warning",
+      "message": "Top 10 Concentration: 0.3% (min: 30.0%)"
+    },
+    "single_holding_risk": {
+      "value": 0.0582204263796,
+      "passed": "True",
+      "severity": "pass",
+      "message": "Largest Holding: 0.1% (max: 20.0%)"
+    }
+  },
+  "business": {
+    "unrated_exposure": {
+      "value": 0.9595058008116,
+      "passed": "True",
+      "severity": "pass",
+      "message": "Unrated Exposure: 1.0% (max: 15.0%)"
+    },
+    "investment_grade": {
+      "value": 0.9595058008116,
+      "passed": "False",
+      "severity": "warning",
+      "message": "Investment Grade: 1.0% (min: 70.0%)"
+    },
+    "diversification": {
+      "value": 0.9999985874304447,
+      "passed": "True",
+      "severity": "pass",
+      "message": "Diversification Score: 1.00 (min: 0.6)"
+    }
+  },
+  "summary": {
+    "overall_score": 55.55555555555556,
+    "total_checks": 9,
+    "passed_checks": 5,
+    "critical_issues": 2,
+    "warning_issues": 2,
+    "quality_grade": "F"
+  }
+}

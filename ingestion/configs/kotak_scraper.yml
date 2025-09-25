@@ -1,0 +1,90 @@
+amc_name: "KOTAK"
+full_name: "Kotak Mahindra Asset Management Company"
+
+# Scraping strategy
+scraping_strategy: "dynamic_html"
+
+# Years to check
+years_to_check: 2
+
+# Disclosure types configuration
+disclosure_types:
+  monthly:
+    base_url: "https://www.kotakmf.com/investor-service/scheme-portfolio"
+    title_patterns:
+      - "Monthly Portfolio.*?\\d{1,2}[st|nd|rd|th]*\\s+\\w+\\s+\\d{4}"
+      - "Portfolio Disclosure.*?Monthly.*?\\d{1,2}\\s+\\w+\\s+\\d{4}"
+    link_selectors:
+      - 'a[href*=".xlsx"]'
+      - 'a[href*=".xls"]'
+      - 'a[href*="portfolio"]'
+    file_extensions: [".xlsx", ".xls", ".zip"]
+    
+  fortnightly:
+    base_url: "https://www.kotakmf.com/investor-service/scheme-portfolio"
+    title_patterns:
+      - "Fortnightly Portfolio.*?\\d{1,2}[st|nd|rd|th]*\\s+\\w+\\s+\\d{4}"
+      - "Portfolio Disclosure.*?Fortnightly.*?\\d{1,2}\\s+\\w+\\s+\\d{4}"
+    link_selectors:
+      - 'a[href*=".xlsx"]'
+      - 'a[href*=".xls"]' 
+      - 'a[href*="portfolio"]'
+    file_extensions: [".xlsx", ".xls", ".zip"]
+
+# Fund type patterns
+fund_type_patterns:
+  corporate-bond:
+    - "corporate.?bond"
+    - "credit.?risk"
+    - "dynamic.?bond"
+    - "psu.?bank"
+    - "banking.?psu"
+  
+  money-market:
+    - "money.?market"
+    - "liquid"
+    - "ultra.?short"
+    - "overnight"
+    - "savings"
+  
+  gilt:
+    - "gilt"
+    - "government"
+    - "g.?sec"
+  
+  hybrid:
+    - "hybrid"
+    - "balanced"
+    - "conservative"
+    - "aggressive"
+    - "multi.?asset"
+    - "asset.?allocator"
+  
+  equity:
+    - "equity"
+    - "large.?cap"
+    - "mid.?cap"
+    - "small.?cap"
+    - "flexicap"
+    - "focused"
+    - "value"
+    - "emerging"
+
+# Request settings
+request_settings:
+  user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+  delay_between_requests: 3
+  timeout: 30
+  max_retries: 3
+
+# Output settings
+output:
+  base_dir: "data/raw"
+  create_fund_type_folders: true
+
+# Special handling
+special_handling:
+  extract_zip_files: true
+  requires_session_cookies: false
+  follow_redirects: true
+  javascript_required: false

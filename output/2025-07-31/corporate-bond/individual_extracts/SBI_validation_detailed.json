@@ -1,0 +1,100 @@
+{
+  "fund_info": {
+    "amc": NaN,
+    "fund_name": NaN,
+    "total_holdings": 133,
+    "as_of_date": "2025-07-31"
+  },
+  "completeness": {
+    "nav_coverage": {
+      "value": 97.21000000000001,
+      "passed": "True",
+      "severity": "pass",
+      "message": "NAV Coverage: 97.2% (min: 95.0%)"
+    },
+    "nav_variance": {
+      "value": 2.789999999999992,
+      "passed": "False",
+      "severity": "warning",
+      "message": "NAV Variance: \u00b12.8% (max: \u00b12.0%)"
+    },
+    "holdings_count": {
+      "value": 133,
+      "passed": true,
+      "severity": "pass",
+      "message": "Holdings Count: 133 (min: 10)"
+    },
+    "cash_component": {
+      "value": 21.34,
+      "passed": "False",
+      "severity": "warning",
+      "message": "Cash Component: 21.3% (expected: 0.5-20.0%)"
+    },
+    "isin_coverage": {
+      "value": 75.87,
+      "passed": "True",
+      "severity": "pass",
+      "message": "ISIN Securities: 75.9% of portfolio"
+    }
+  },
+  "quality": {
+    "zero_values": {
+      "value": 0.23308270676691728,
+      "passed": "False",
+      "severity": "warning",
+      "message": "Zero Values: 23.3% (31/133)"
+    },
+    "top10_concentration": {
+      "value": 35.400000000000006,
+      "passed": "True",
+      "severity": "pass",
+      "message": "Top 10 Concentration: 35.4% (min: 30.0%)"
+    },
+    "single_holding_risk": {
+      "value": 9.34,
+      "passed": "True",
+      "severity": "pass",
+      "message": "Largest Holding: 9.3% (max: 20.0%)"
+    },
+    "yield_reasonableness": {
+      "value": 6.939160155445545,
+      "passed": "True",
+      "severity": "pass",
+      "message": "Average Yield: 6.94% (expected: 0.0-25.0%)"
+    }
+  },
+  "business": {
+    "unrated_exposure": {
+      "value": 2.08,
+      "passed": "True",
+      "severity": "pass",
+      "message": "Unrated Exposure: 2.1% (max: 15.0%)"
+    },
+    "investment_grade": {
+      "value": 77.53999999999999,
+      "passed": "True",
+      "severity": "pass",
+      "message": "Investment Grade: 77.5% (min: 70.0%)"
+    },
+    "cash_limits": {
+      "value": 21.339999999999996,
+      "passed": "True",
+      "severity": "pass",
+      "message": "Cash Equivalents: 21.3% (max: 25.0%)"
+    },
+    "diversification": {
+      "value": 0.97717273,
+      "passed": "True",
+      "severity": "pass",
+      "message": "Diversification Score: 0.98 (min: 0.6)"
+    }
+  },
+  "summary": {
+    "overall_score": 76.92307692307693,
+    "total_checks": 13,
+    "passed_checks": 10,
+    "critical_issues": 0,
+    "warning_issues": 3,
+    "quality_grade": "C+"
+  }
+}

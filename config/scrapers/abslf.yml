@@ -1,0 +1,57 @@
+# ADITYA BIRLA SUN LIFE SCRAPER CONFIGURATION
+# ==========================================
+
+amc_name: "ABSLF"
+full_name: "Aditya Birla Sun Life Asset Management Company Limited"
+website: "https://mutualfund.adityabirlacapital.com"
+active: true
+
+disclosure_sources:
+  website:
+    enabled: true
+    base_url: "https://mutualfund.adityabirlacapital.com/forms-and-downloads/portfolio"
+
+fund_types:
+  corporate-bond:
+    source_type: "website"
+    file_patterns:
+      - "*Corporate*Bond*"
+      - "*corp*bond*"
+      - "*ABSL*Corporate*"
+      - "*Birla*Corporate*"
+    expected_formats: [".xlsx", ".xls", ".pdf"]
+    css_selectors:
+      - "a[href*='corporate']"
+      - "a[href*='bond']"
+      - "a[href*='.xls']"
+      - "a[href*='.xlsx']"
+    
+  money-market:
+    source_type: "website"
+    file_patterns:
+      - "*Money*Market*"
+      - "*Liquid*"
+      - "*ABSL*Money*"
+      - "*Birla*Money*"
+    expected_formats: [".xlsx", ".xls", ".pdf"]
+    css_selectors:
+      - "a[href*='money']"
+      - "a[href*='liquid']"
+      - "a[href*='.xls']"
+      - "a[href*='.xlsx']"
+
+  all:
+    source_type: "website"
+    file_patterns:
+      - "*portfolio*"
+      - "*disclosure*"
+      - "*.xls*"
+    expected_formats: [".xlsx", ".xls", ".pdf"]
+    css_selectors:
+      - "a[href*='.xls']"
+      - "a[href*='.xlsx']"
+      - "a[href*='portfolio']"
+
+rate_limiting:
+  requests_per_minute: 30
+  delay_between_requests: 2

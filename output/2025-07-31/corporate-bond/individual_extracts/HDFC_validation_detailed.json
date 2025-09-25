@@ -1,0 +1,82 @@
+{
+  "fund_info": {
+    "amc": "HDFC",
+    "fund_name": "HDFC Corporate Bond Fund",
+    "total_holdings": 228,
+    "as_of_date": "2025-07-31"
+  },
+  "completeness": {
+    "nav_coverage": {
+      "value": "0",
+      "passed": "False",
+      "severity": "critical",
+      "message": "NAV Coverage: 0.0% (min: 95.0%)"
+    },
+    "nav_variance": {
+      "value": 100.0,
+      "passed": "False",
+      "severity": "critical",
+      "message": "NAV Variance: \u00b1100.0% (max: \u00b12.0%)"
+    },
+    "holdings_count": {
+      "value": 228,
+      "passed": true,
+      "severity": "pass",
+      "message": "Holdings Count: 228 (min: 10)"
+    }
+  },
+  "quality": {
+    "zero_values": {
+      "value": 0.0,
+      "passed": "True",
+      "severity": "pass",
+      "message": "Zero Values: 0.0% (0/228)"
+    },
+    "top10_concentration": {
+      "value": "0",
+      "passed": "False",
+      "severity": "warning",
+      "message": "Top 10 Concentration: 0.0% (min: 30.0%)"
+    },
+    "single_holding_risk": {
+      "value": "0",
+      "passed": "True",
+      "severity": "pass",
+      "message": "Largest Holding: 0.0% (max: 20.0%)"
+    },
+    "yield_reasonableness": {
+      "value": 6.858396475770926,
+      "passed": "True",
+      "severity": "pass",
+      "message": "Average Yield: 6.86% (expected: 0.0-25.0%)"
+    }
+  },
+  "business": {
+    "unrated_exposure": {
+      "value": "0",
+      "passed": "True",
+      "severity": "pass",
+      "message": "Unrated Exposure: 0.0% (max: 15.0%)"
+    },
+    "investment_grade": {
+      "value": "0",
+      "passed": "False",
+      "severity": "warning",
+      "message": "Investment Grade: 0.0% (min: 70.0%)"
+    },
+    "diversification": {
+      "value": 1.0,
+      "passed": "True",
+      "severity": "pass",
+      "message": "Diversification Score: 1.00 (min: 0.6)"
+    }
+  },
+  "summary": {
+    "overall_score": 60.0,
+    "total_checks": 10,
+    "passed_checks": 6,
+    "critical_issues": 2,
+    "warning_issues": 2,
+    "quality_grade": "F"
+  }
+}

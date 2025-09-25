@@ -95,112 +95,136 @@ def read_excel_with_config(file_path, config, fund_type):
     
     return df, fund_config
 
-def extract_data_from_file(file_path, config, fund_type, as_of_date):
-    """Extract data from a single file using configuration"""
+def find_uti_scheme(df, target_scheme_name):
+    """Find UTI target scheme and return scheme boundaries"""
+    for idx, row in df.iterrows():
+        for col in df.columns:
+            cell_value = str(row[col]) if pd.notna(row[col]) else ''
+            if 'SCHEME:' in cell_value.upper() and target_scheme_name.lower() in cell_value.lower():
+                # Find next scheme to determine boundary
+                next_scheme_row = None
+                for next_idx in range(idx + 5, len(df)):
+                    for next_col in df.columns:
+                        next_cell = str(df.iloc[next_idx, next_col]) if pd.notna(df.iloc[next_idx, next_col]) else ''
+                        if 'SCHEME:' in next_cell.upper():
+                            next_scheme_row = next_idx
+                            break
+                    if next_scheme_row:
+                        break
+                
+                return {
+                    'start_row': idx,
+                    'header_row': idx + 3,
+                    'data_start_row': idx + 5,
+                    'end_row': next_scheme_row if next_scheme_row else len(df)
+                }
+    return None
+
+def extract_data_from_file(file_path, config, fund_type, as_of_date, use_enhanced=True):
+    """Main extraction function for a single file"""
+    
+    # Use enhanced extractor if available and configured
+    if use_enhanced and config.get('use_enhanced_extraction', True):
+        try:
+            from src.enhanced_extractor import extract_enhanced_data
+            return extract_enhanced_data(file_path, config, fund_type, as_of_date)
+        except ImportError:
+            print("⚠️ Enhanced extractor not available, falling back to basic extraction")
+        except Exception as e:
+            print(f"⚠️ Enhanced extraction failed: {e}, falling back to basic extraction")
+    
+    # Basic extraction (ISIN-only) - legacy method
     amc_name = config['amc_name']
-    print(f"\n📊 Processing {amc_name}: {file_path.name}")
+    print(f"\n📊 Processing {amc_name}: {file_path.name} (Basic Mode)")
     
     # Read Excel file
     df, fund_config = read_excel_with_config(file_path, config, fund_type)
     print(f"📊 Raw sheet shape: {df.shape}")
     
-    # Extract headers and data
-    header_row = fund_config['header_row'] - 1  # Convert to 0-indexed
-    data_start_row = fund_config.get('data_start_row', header_row + 1) - 1
-    
-    # Handle positional mapping (like Kotak)
-    if config.get('file_handling', {}).get('uses_positional_mapping', False):
-        # Use positional column mapping
-        data_df = df.iloc[data_start_row:].reset_index(drop=True)
-        
-        # Filter valid ISINs using position
-        isin_col = config['column_mappings']['isin_col']
-        valid_mask = data_df.iloc[:, isin_col].apply(is_valid_isin)
-        data_df = data_df[valid_mask].reset_index(drop=True)
-        
-        # Create standardized dataset using positional mapping
-        standardized = pd.DataFrame({
-            'Fund Name': fund_config['fund_name'],
-            'AMC': amc_name,
-            'ISIN': data_df.iloc[:, config['column_mappings']['isin_col']],
-            'Instrument Name': data_df.iloc[:, config['column_mappings']['instrument_name_col']],
-            'Market Value (Lacs)': pd.to_numeric(data_df.iloc[:, config['column_mappings']['market_value_col']], errors='coerce'),
-            '% to NAV': pd.to_numeric(data_df.iloc[:, config['column_mappings']['nav_percentage_col']], errors='coerce'),
-            'Yield': pd.to_numeric(data_df.iloc[:, config['column_mappings']['yield_col']], errors='coerce'),
-            'Rating': data_df.iloc[:, config['column_mappings']['rating_col']],
-            'Quantity': pd.to_numeric(data_df.iloc[:, config['column_mappings']['quantity_col']], errors='coerce'),
-            'As Of Date': as_of_date
-        })
-        
-    else:
-        # Use named column mapping
-        headers = df.iloc[header_row].fillna("").astype(str).str.strip()
-        data_df = df.iloc[header_row + 1:].reset_index(drop=True)
-        data_df.columns = headers
-        
-        # Check for required columns
-        column_mappings = config['column_mappings']
-        isin_col = column_mappings['isin']
-        
-        if isin_col not in data_df.columns:
-            print(f"❌ Required column '{isin_col}' not found!")
-            print(f"Available columns: {list(data_df.columns)}")
+    # Special handling for UTI which has multiple schemes in single file
+    if amc_name == 'UTI' and config.get('file_handling', {}).get('uses_scheme_detection'):
+        target_scheme = fund_config.get('target_scheme')
+        if not target_scheme:
+            print(f"❌ No target scheme specified for UTI {fund_type}")
             return None
         
-        # Filter valid ISINs
-        valid_mask = data_df[isin_col].apply(is_valid_isin)
-        data_df = data_df[valid_mask].reset_index(drop=True)
+        # Find the specific scheme
+        scheme_info = find_uti_scheme(df, target_scheme)
+        if not scheme_info:
+            print(f"❌ Target scheme '{target_scheme}' not found in UTI file")
+            return None
         
-        # Find market value column (flexible matching)
-        market_value_col = column_mappings.get('market_value')
-        if market_value_col not in data_df.columns:
-            # Try to find similar column
-            value_cols = [col for col in data_df.columns if 'market' in col.lower() or 'value' in col.lower() or 'exposure' in col.lower()]
-            if value_cols:
-                market_value_col = value_cols[0]
-                print(f"💰 Using market value column: '{market_value_col}'")
-            else:
-                print(f"❌ No market value column found!")
-                return None
+        # Extract data for this scheme
+        headers = df.iloc[scheme_info['header_row']].fillna("").astype(str).str.strip()
+        data_df = df.iloc[scheme_info['data_start_row']:scheme_info['end_row']].reset_index(drop=True)
+        data_df.columns = headers
         
-        # Create standardized dataset
-        standardized = pd.DataFrame({
-            'Fund Name': fund_config['fund_name'],
-            'AMC': amc_name,
-            'ISIN': data_df[isin_col],
-            'Instrument Name': data_df.get(column_mappings.get('instrument_name', ''), ''),
-            'Market Value (Lacs)': pd.to_numeric(data_df[market_value_col], errors='coerce'),
-            '% to NAV': pd.to_numeric(data_df.get(column_mappings.get('nav_percentage', ''), 0), errors='coerce'),
-            'Yield': pd.to_numeric(data_df.get(column_mappings.get('yield', ''), 0), errors='coerce'),
-            'Rating': data_df.get(column_mappings.get('rating', ''), ''),
-            'Quantity': pd.to_numeric(data_df.get(column_mappings.get('quantity', ''), 0), errors='coerce'),
-            'As Of Date': as_of_date
-        })
+        print(f"📊 UTI Scheme: {target_scheme}")
+        print(f"📊 Data rows: {scheme_info['data_start_row']} to {scheme_info['end_row']}")
+        
+    else:
+        # Regular processing for single-scheme files
+        header_row = fund_config['header_row'] - 1  # Convert to 0-based index
+        headers = df.iloc[header_row].fillna("").astype(str).str.strip()
+        
+        # Extract data from header row onwards
+        data_df = df.iloc[header_row + 1:].reset_index(drop=True)
+        data_df.columns = headers
     
-    # Apply data processing rules
-    processing = config.get('processing', {})
+    # Get column mappings
+    column_mappings = config['column_mappings']
+    isin_col = column_mappings['isin']
+    name_col = column_mappings['instrument_name']
+    value_col = column_mappings.get('market_value')
     
-    # Yield conversion
-    if processing.get('yield_conversion') == 'decimal_to_percentage':
-        sample_yield = standardized['Yield'].dropna()
-        if len(sample_yield) > 0 and sample_yield.max() < 1:
-            standardized['Yield'] = standardized['Yield'] * 100
-            print("📊 Converted yield from decimal to percentage")
+    # For debugging: show available columns
+    print(f"📊 Available columns: {list(data_df.columns)}")
     
-    # NAV conversion  
-    if processing.get('nav_conversion') == 'decimal_to_percentage':
-        sample_nav = standardized['% to NAV'].dropna()
-        if len(sample_nav) > 0 and sample_nav.max() < 1:
-            standardized['% to NAV'] = standardized['% to NAV'] * 100
-            print("📊 Converted NAV from decimal to percentage")
+    # Find market value column if not exact match
+    if value_col not in data_df.columns:
+        # Try to find similar columns
+        value_cols = [col for col in data_df.columns if 'market' in col.lower() or 'value' in col.lower() or 'exposure' in col.lower()]
+        if value_cols:
+            value_col = value_cols[0]
+            print(f"💰 Using market value column: '{value_col}'")
+        else:
+            print(f"❌ No market value column found!")
+            return None
     
-    # No maturity date extraction - will be sourced from master sheet
+    # Extract valid holdings (has ISIN and name) - BASIC MODE: ISIN-only
+    has_isin_mask = data_df[isin_col].notna() & (data_df[isin_col].astype(str).str.strip() != '')
+    has_name_mask = data_df[name_col].notna() & (data_df[name_col].astype(str).str.strip() != '')
+    
+    valid_holdings = data_df[has_isin_mask & has_name_mask].copy()
+    
+    print(f"� Valid ISIN holdings found: {len(valid_holdings)}")
+    
+    if len(valid_holdings) == 0:
+        print(f"❌ No valid holdings found in {amc_name} {fund_type}")
+        return None
+    
+    # Create standardized output (basic format for backward compatibility)
+    output_data = pd.DataFrame()
+    output_data['Fund Name'] = fund_config['fund_name']
+    output_data['AMC'] = amc_name
+    output_data['ISIN'] = valid_holdings[isin_col]
+    output_data['Instrument Name'] = valid_holdings[name_col]
+    output_data['Market Value (Lacs)'] = pd.to_numeric(valid_holdings[value_col], errors='coerce').fillna(0)
+    output_data['% to NAV'] = pd.to_numeric(valid_holdings.get(column_mappings.get('nav_percentage', ''), 0), errors='coerce').fillna(0)
+    output_data['Yield'] = pd.to_numeric(valid_holdings.get(column_mappings.get('yield', ''), 0), errors='coerce').fillna(0)
+    output_data['Rating'] = valid_holdings.get(column_mappings.get('rating', ''), '')
+    output_data['Quantity'] = pd.to_numeric(valid_holdings.get(column_mappings.get('quantity', ''), 0), errors='coerce').fillna(0)
+    output_data['As Of Date'] = as_of_date
     
     # Summary
-    total_value = standardized['Market Value (Lacs)'].sum()
-    print(f"✅ {amc_name}: {len(standardized)} holdings, ₹{total_value/100:,.0f} Cr")
+    total_value = output_data['Market Value (Lacs)'].sum()
+    total_nav_pct = output_data['% to NAV'].sum()
     
-    return standardized
+    print(f"� Total ISIN Holdings: {len(output_data)}")
+    print(f"💰 Total Value: ₹{total_value:,.0f} Lacs (₹{total_value/100:,.0f} Crores)")
+    print(f"� NAV Coverage: {total_nav_pct:.1f}% (ISIN-only)")
+    
+    return {'main_holdings': output_data, 'total_value': total_value}
 
 def save_individual_extract(df, amc_name, date, fund_type):
     """Save individual AMC extract to CSV"""
@@ -222,7 +246,7 @@ def main():
     args = parser.parse_args()
     
     # Available AMCs
-    available_amcs = ['ABSLF', 'HDFC', 'ICICI', 'KOTAK', 'NIPPON', 'SBI']
+    available_amcs = ['ABSLF', 'HDFC', 'ICICI', 'KOTAK', 'NIPPON', 'SBI', 'UTI']
     
     # Parse AMC selection
     if args.amc.lower() == 'all':
@@ -258,15 +282,33 @@ def main():
             if len(files) > 1:
                 print(f"⚠️  {amc}: Multiple files found, using first: {files[0].name}")
             
-            # Extract data
-            df = extract_data_from_file(files[0], config, args.fund_type, args.date)
+            # Extract data (enhanced or basic)
+            result = extract_data_from_file(files[0], config, args.fund_type, args.date)
             
-            if df is not None and len(df) > 0:
-                # Save individual extract
-                save_individual_extract(df, amc, args.date, args.fund_type)
-                success_count += 1
+            if result is not None:
+                # Handle both enhanced and basic extraction results
+                if isinstance(result, dict) and 'main_holdings' in result:
+                    # Enhanced extraction result
+                    try:
+                        from src.enhanced_extractor import save_enhanced_extract
+                        save_enhanced_extract(result, amc, args.date, args.fund_type)
+                        success_count += 1
+                        print(f"✅ {amc}: Enhanced extraction successful")
+                    except ImportError:
+                        # Fallback to basic save
+                        if len(result['main_holdings']) > 0:
+                            save_individual_extract(result['main_holdings'], amc, args.date, args.fund_type)
+                            success_count += 1
+                            print(f"✅ {amc}: Basic save successful")
+                elif hasattr(result, '__len__') and len(result) > 0:
+                    # Basic extraction result (DataFrame)
+                    save_individual_extract(result, amc, args.date, args.fund_type)
+                    success_count += 1
+                    print(f"✅ {amc}: Basic extraction successful")
+                else:
+                    print(f"❌ {amc}: No valid data extracted")
             else:
-                print(f"❌ {amc}: No valid data extracted")
+                print(f"❌ {amc}: Extraction returned None")
                 
         except Exception as e:
             print(f"❌ {amc}: Extraction failed - {e}")

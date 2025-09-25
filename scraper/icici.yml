@@ -1,0 +1,32 @@
+amc_name: "ICICI"
+base_url: "https://www.icicipruamc.com/blob/downloads/Files"
+
+# URL patterns for direct downloads
+url_patterns:
+  monthly: "{base_url}/Monthly%20Portfolio%20Disclosures/{year}/{month_short}/Monthly-Portfolio-Disclosure-{month_full}-{year}.zip"
+  fortnightly: "{base_url}/Fortnightly%20Portfolio%20Disclosures/{year}/Fortnightly%20Debt%20Scheme%20Portfolio%20-%20{date}.zip"
+
+# Target files to try
+target_files:
+  fortnightly:
+    - date: "15th%20September%202025"
+      year: "2025"
+  monthly:  
+    - month: "Aug"
+      year: "2025"
+    - month: "Jul" 
+      year: "2025"
+
+# Fund type patterns to sort files after extraction
+fund_type_patterns:
+  corporate-bond:
+    - "corporate.*bond"
+    - "credit.*risk" 
+    - "banking.*psu"
+  money-market:
+    - "liquid"
+    - "money.*market"
+    - "ultra.*short"
+  gilt:
+    - "gilt"
+    - "government"
